@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
 
+from src.test import App
+
 if __name__ == '__main__':
-    print('kek')
+    app = App()
+    app.run()
