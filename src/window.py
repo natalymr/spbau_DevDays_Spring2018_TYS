@@ -1,0 +1,39 @@
+from PyQt5.QtWidgets import QWidget, QSplitter, QHBoxLayout, QDesktopWidget
+from PyQt5.QtCore import Qt
+from src.task_window import WindowTask
+from src.code_window import WindowCode
+from src.chat_window import WindowChat
+
+
+class Window(QWidget):
+
+    def __init__(self):
+        super().__init__()
+        self.initUI()
+
+    def initUI(self):
+        self.setWindowTitle('TryYourSkills')
+        self.setGeometry(0, 0,
+                         QDesktopWidget().availableGeometry().width(),
+                         QDesktopWidget().availableGeometry().height())
+        self.set_windows()
+
+    def set_windows(self):
+        hbox = QHBoxLayout(self)
+        self.task_window = WindowTask(self)
+        self.chat_window = WindowChat(self)
+        self.code_window = WindowCode(self)
+
+        splitter1 = QSplitter(Qt.Vertical)
+        splitter1.addWidget(self.task_window)
+        splitter1.addWidget(self.code_window)
+        splitter1.setSizes([self.width() // 3,
+                            self.width() * 2 // 3])
+
+        splitter2 = QSplitter(Qt.Horizontal)
+        splitter2.addWidget(splitter1)
+        splitter2.addWidget(self.chat_window)
+        splitter2.setSizes([self.height() * 2 // 3,
+                            self.height() // 3])
+        hbox.addWidget(splitter2)
+        self.setLayout(hbox)
