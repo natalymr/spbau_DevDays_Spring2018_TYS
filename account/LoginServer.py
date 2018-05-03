@@ -34,6 +34,7 @@ class LoginServer:
         if user.login in self.users:
             return False
         self.users.update({user.login: user})
+        return True
 
     def login(self, login, passwd):
         if login not in self.users:
@@ -48,21 +49,21 @@ class LoginServer:
     def test():
         login_server = LoginServer("test.pickle")
         login_server.register('u1', 'p1', 'n1')
-        assert login_server.login('u1', 'p1') != None, 'user must be registered'
-        assert login_server.login('u1', 'p2') == None, 'must be invalid passwd'
-        assert login_server.login('u2', 'p1') == None, 'user must not be registered'
+        assert login_server.login('u1', 'p1') is not None, 'user must be registered'
+        assert login_server.login('u1', 'p2') is None, 'must be invalid passwd'
+        assert login_server.login('u2', 'p1') is None, 'user must not be registered'
         login_server.register('u2', 'p2', 'n2')
-        assert login_server.login('u2', 'p2') != None, 'user must be registered'
+        assert login_server.login('u2', 'p2') is not None, 'user must be registered'
 
         login_server.dump()
         login_server = LoginServer("test.pickle")
-        assert login_server.login('u1', 'p1') != None, 'user must be registered'
-        assert login_server.login('u2', 'p2') != None, 'user must be registered'
+        assert login_server.login('u1', 'p1') is not None, 'user must be registered'
+        assert login_server.login('u2', 'p2') is not None, 'user must be registered'
 
         login_server.clean()
         login_server = LoginServer("test.pickle")
-        assert login_server.login('u1', 'p1') == None, 'user must not be registered'
-        assert login_server.login('u2', 'p1') == None, 'user must not be registered'
+        assert login_server.login('u1', 'p1') is None, 'user must not be registered'
+        assert login_server.login('u2', 'p1') is None, 'user must not be registered'
         login_server.clean()
 
-LoginServer.test()
+# LoginServer.test()
