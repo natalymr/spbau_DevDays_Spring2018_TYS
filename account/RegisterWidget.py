@@ -1,7 +1,7 @@
 
 import sys
 from LoginServer import LoginServer, User
-from ProfileWidget import Profile
+from ProfileWidget import ProfileWidget
 from PyQt5.QtWidgets import QWidget, QMessageBox, QApplication, QLabel, QLineEdit, QPushButton, QVBoxLayout, \
     QHBoxLayout, QGridLayout
 
@@ -60,23 +60,10 @@ class Register(QWidget):
         if 0 == len(login) or 0 == len(passwd) or 0 == len(name):
             QMessageBox.warning(self, 'Error', 'All fields must be completed')
         elif self.login_server.register(login, passwd, name):
-            print(self.login_server.users)
             self.login_server.dump()
-            print('after', self.login_server.users)
-            self.owner.current_widget = Profile(self.login_server.login(login, passwd), self.owner, self.parent)
+            self.owner.current_widget = ProfileWidget(self.login_server.login(login, passwd), self.owner, self.parent)
             self.hide()
         else:
             QMessageBox.warning(self, 'Error', 'login are already exist')
 
 
-# class WindowDispathcher:
-#     def __init__(self, login_server_file_name):
-#         self.login_server = LoginServer(login_server_file_name)
-#         self.current_widget = Register(self.login_server, self, None)
-#
-#
-# if __name__ == '__main__':
-#     app = QApplication(sys.argv)
-#     w = WindowDispathcher('LoginServer.pickle')
-#     sys.exit(app.exec_())
-#

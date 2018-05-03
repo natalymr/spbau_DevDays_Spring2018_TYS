@@ -1,9 +1,9 @@
-
 from PyQt5.QtWidgets import QWidget, QLabel, QVBoxLayout
 
-class Profile(QWidget):
+
+class ProfileWidget(QWidget):
     def __init__(self, user, owner, parent):
-        super(Profile, self).__init__()
+        super(ProfileWidget, self).__init__()
         self.parent = parent
         self.owner = owner
         self.user = user
@@ -17,5 +17,6 @@ class Profile(QWidget):
         self.show()
 
     def closeEvent(self, event):
+        self.user.logout_callback()
         self.parent.show()
         event.accept()

@@ -2,12 +2,7 @@ import os
 import pickle
 import hashlib
 
-
-class User:
-    def __init__(self, login, passwd_hash, name):
-        self.login = login
-        self.name = name
-        self.passwd_hash = passwd_hash
+from User import User
 
 
 class LoginServer:
@@ -43,6 +38,7 @@ class LoginServer:
         passwd_hash = hashlib.sha256(passwd.encode()).hexdigest()
         if passwd_hash != user.passwd_hash:
             return None
+        user.login_callback()
         return user
 
     @staticmethod

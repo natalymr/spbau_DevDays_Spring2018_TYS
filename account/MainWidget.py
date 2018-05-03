@@ -1,5 +1,5 @@
 import sys
-from LoginServer import LoginServer, User
+from LoginServer import LoginServer
 from LoginWidget import LoginWidget
 from RegisterWidget import Register
 from PyQt5.QtWidgets import *
@@ -22,7 +22,7 @@ class MainWidget(QWidget):
 
         self.setLayout(button_layout)
         self.setGeometry(300, 300, 280, 170)
-        self.setWindowTitle('QLineEdit')
+        self.setWindowTitle('QMainWidget')
         self.show()
 
     def handle_register(self):
@@ -34,7 +34,7 @@ class MainWidget(QWidget):
         self.owner.current_widget = LoginWidget(self.owner.login_server, self.owner, self)
 
 
-class WindowDispathcher:
+class WindowDispatcher:
     def __init__(self, login_server_file_name):
         self.login_server = LoginServer(login_server_file_name)
         self.current_widget = MainWidget(self)
@@ -42,5 +42,5 @@ class WindowDispathcher:
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    w = WindowDispathcher('LoginServer.pickle')
+    w = WindowDispatcher('LoginServer.pickle')
     sys.exit(app.exec_())

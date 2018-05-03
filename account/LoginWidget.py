@@ -1,12 +1,8 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
-import sys
-
-import ProfileWidget
-from LoginServer import LoginServer, User
-from PyQt5.QtWidgets import QWidget, QMessageBox, QApplication, QLabel, QLineEdit, QPushButton, QVBoxLayout, \
-    QHBoxLayout, QGridLayout
+from ProfileWidget import ProfileWidget
+from PyQt5.QtWidgets import *
 
 
 class LoginWidget(QWidget):
@@ -57,8 +53,9 @@ class LoginWidget(QWidget):
     def handle_login(self):
         user = self.login_server.login(self.textLogin.text(), self.textPasswd.text())
         if user is not None:
-            self.owner.current_widget = ProfileWidget.Profile(user, self.owner, self.parent)
+            self.owner.current_widget = ProfileWidget(user, self.owner, self.parent)
         else:
+            self.textPasswd.setText("")
             QMessageBox.warning(self, 'Error', 'Bad user or password')
 
     def closeEvent(self, event):
@@ -68,10 +65,3 @@ class LoginWidget(QWidget):
             event.accept()
         else:
             event.ignore()
-
-
-
-# if __name__ == '__main__':
-#     app = QApplication(sys.argv)
-#     ex = Login(LoginServer('LoginServer.pickle'))
-#     sys.exit(app.exec_())
