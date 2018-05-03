@@ -1,5 +1,8 @@
-from PyQt5.QtWidgets import QApplication, QWidget, QFrame, QSplitter, QHBoxLayout, QDesktopWidget
+from PyQt5.QtWidgets import QWidget, QSplitter, QHBoxLayout, QDesktopWidget
 from PyQt5.QtCore import Qt
+from src.task_window import WindowTask
+from src.code_window import WindowCode
+from src.chat_window import WindowChat
 
 
 class Window(QWidget):
@@ -17,30 +20,20 @@ class Window(QWidget):
 
     def set_windows(self):
         hbox = QHBoxLayout(self)
+        self.task_window = WindowTask(self)
+        self.chat_window = WindowChat(self)
+        self.code_window = WindowCode(self)
 
-        task_window = QFrame(self)
-        task_window.setFrameShape(QFrame.StyledPanel)
-        # task_window.setGeometry(1, 1, 20, 20)
+        splitter1 = QSplitter(Qt.Vertical)
+        splitter1.addWidget(self.task_window)
+        splitter1.addWidget(self.code_window)
+        splitter1.setSizes([self.width() // 3,
+                            self.width() * 2 // 3])
 
-        chat_window = QFrame(self)
-        chat_window.setFrameShape(QFrame.StyledPanel)
-        # chat_window.setGeometry(1, 1, 20, 20)
-
-        code_window = QFrame(self)
-        code_window.setFrameShape(QFrame.StyledPanel)
-        code_window.setFrameShadow(QFrame.Raised)
-        # code_window.setGeometry(1, 1, 20, 20)
-
-        splitter2 = QSplitter(Qt.Vertical)
-        splitter2.addWidget(task_window)
-        splitter2.addWidget(code_window)
-
-        splitter1 = QSplitter(Qt.Horizontal)
-        splitter1.addWidget(task_window)
-        splitter1.addWidget(code_window)
-        splitter1.addWidget(chat_window)
-
-        hbox.addWidget(splitter1)
+        splitter2 = QSplitter(Qt.Horizontal)
+        splitter2.addWidget(splitter1)
+        splitter2.addWidget(self.chat_window)
+        splitter2.setSizes([self.height() * 2 // 3,
+                            self.height() // 3])
         hbox.addWidget(splitter2)
-
         self.setLayout(hbox)
