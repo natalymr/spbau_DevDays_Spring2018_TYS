@@ -56,9 +56,9 @@ class WindowChat(QSplitter):
 
     @pyqtSlot()
     def answer_click(self):
-        # if self.chat_box.current_task.id == 1:
-        #     self.chat_box.check_ckeckbox()
-        #     return
+        if self.chat_box.current_task.type == 1:
+            self.chat_box.check_ckeckbox()
+            return
         answer = self.text_window.toPlainText()
         right_answers = self.chat_box.current_task.right_answers
         self.text_window.setPlainText(answer)

@@ -64,9 +64,9 @@ class ChatBox(QSplitter):
         self.answer_box.v_test_box = QVBoxLayout()
         self.__make_checkbox(task.proposed_answers)
         self.answer_box.v_test_box.addStretch(1)
-        go_button = QPushButton('Go', self.answer_box)
-        go_button.clicked.connect(self.check_ckeckbox)
-        self.answer_box.v_test_box.addWidget(go_button, 3)
+        # go_button = QPushButton('Go', self.answer_box)
+        # go_button.clicked.connect(self.check_ckeckbox)
+        # self.answer_box.v_test_box.addWidget(go_button, 3)
         self.answer_box.setLayout(self.answer_box.v_test_box)
 
     def __make_checkbox(self, proposed_answers):
