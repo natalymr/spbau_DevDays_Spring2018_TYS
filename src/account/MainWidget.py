@@ -1,4 +1,7 @@
 import sys
+
+from PyQt5.QtGui import QIcon
+
 from src.account.LoginServer import LoginServer
 from src.account.LoginWidget import LoginWidget
 from src.account.RegisterWidget import Register
@@ -23,6 +26,7 @@ class MainWidget(QWidget):
         self.setLayout(button_layout)
         self.setGeometry(300, 300, 280, 170)
         self.setWindowTitle('QMainWidget')
+        self.setWindowIcon(QIcon('web.jpg'))
         self.show()
 
     def handle_register(self):

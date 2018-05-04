@@ -25,7 +25,7 @@ class WindowChat(QSplitter):
         self.set_style(self.info_window)
 
         l = QLabel(self.info_window)
-        pixmap = QPixmap('boss.jpg')
+        pixmap = QPixmap('web.jpg')
         l.setPixmap(pixmap)
         vvbox = QVBoxLayout()
         vvbox.addWidget(l)
