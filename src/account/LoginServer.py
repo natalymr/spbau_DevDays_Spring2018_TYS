@@ -2,7 +2,7 @@ import os
 import pickle
 import hashlib
 
-from src.account.User import User
+from src.account.User import User, Task
 
 
 class LoginServer:
@@ -62,4 +62,63 @@ class LoginServer:
         assert login_server.login('u2', 'p1') is None, 'user must not be registered'
         login_server.clean()
 
+    @staticmethod
+    def fill_test_statistic():
+        from random import randint
+        from datetime import datetime, timedelta
+        import matplotlib.pyplot as plt
+        from matplotlib import dates
+        import numpy as np
+
+        login_server = LoginServer('LoginServer.pickle')
+        login_server.register('old_boy', 'old_boy', 'name of old_boy')
+        user = login_server.login('old_boy', 'old_boy')
+        beginning_of_time = datetime.strptime("21/11/17 16:30", "%d/%m/%y %H:%M").date()
+        now = datetime.now().date() - timedelta(days=20)
+        count = 0
+        while beginning_of_time < now:
+            count += 1
+            beginning_of_time += timedelta(days=randint(1, 27))
+            user.login_date = beginning_of_time
+            task_array = list()
+
+            difficulty_class = randint(0, 2)
+            difficulty = 5
+            if difficulty_class == 0:
+                difficulty = 1
+            elif difficulty_class == 1:
+                difficulty = 3
+            result = randint(0, 1)
+            task = Task(count, difficulty)
+            task_array.append((task, result))
+
+            for i in range(randint(1, 5)):
+                count += 1
+                task = Task(count, 1)
+                result = randint(0, 1)
+                task_array.append((task, result))
+            user.end_interview_callback(task_array)
+            user.logout_callback(login_server)
+        curr_stat = user.get_current_week_summary_statistic()
+        print('curr: ', curr_stat.easy_amount, curr_stat.mid_amount, curr_stat.hard_amount)
+
+        full_stat = user.get_summary_statistic()
+        print('full: ', full_stat.easy_amount, full_stat.mid_amount, full_stat.hard_amount)
+
+        date, data = user.get_statistic()
+        t = date
+        t = np.append(t, t[-1])
+        s = np.append(data, 0)
+
+        plt.gca().xaxis.set_major_formatter(dates.DateFormatter('%m/%Y'))
+        plt.gca().xaxis.set_major_locator(dates.MonthLocator())
+        plt.fill_between(t, np.zeros_like(s), s, color='g', alpha=.7)
+        plt.plot(t, s, t, np.zeros_like(s), color='g', alpha=.74)
+        plt.autoscale(enable=True, axis='x', tight=True)
+        plt.show()
+        login_server.clean()
+
 # LoginServer.test()
+
+# LoginServer.fill_test_statistic()
+

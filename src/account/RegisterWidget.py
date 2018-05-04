@@ -58,10 +58,16 @@ class Register(QWidget):
             QMessageBox.warning(self, 'Error', 'All fields must be completed')
         elif self.login_server.register(login, passwd, name):
             self.login_server.dump()
-            self.owner.current_widget = ProfileWidget(self.login_server.login(login, passwd),
-                                                      self.owner, self.parent)
+            user = self.login_server.login(login, passwd)
+            self.owner.current_widget = ProfileWidget(self.login_server, user, self.owner, self.parent)
             self.hide()
         else:
             QMessageBox.warning(self, 'Error', 'Login are already exist')
 
-
+    def closeEvent(self, event):
+        reply = QMessageBox.question(self, 'Quit', 'Are you sure to quit?',
+                                     QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+        if reply == QMessageBox.Yes:
+            event.accept()
+        else:
+            event.ignore()
