@@ -1,5 +1,3 @@
-import sys
-from src.account.LoginServer import LoginServer, User
 from src.account.ProfileWidget import ProfileWidget
 from PyQt5.QtWidgets import *
 
@@ -64,7 +62,7 @@ class Register(QWidget):
             self.owner.current_widget = ProfileWidget(self.login_server, user, self.owner, self.parent)
             self.hide()
         else:
-            QMessageBox.warning(self, 'Error', 'login are already exist')
+            QMessageBox.warning(self, 'Error', 'Login are already exist')
 
     def closeEvent(self, event):
         reply = QMessageBox.question(self, 'Quit', 'Are you sure to quit?',

@@ -1,6 +1,7 @@
 import os
 from PyQt5.QtWidgets import QFrame, QSplitter, QTextEdit, QPushButton, QWidget
 from PyQt5.QtCore import Qt
+from PyQt5 import QtGui
 import subprocess
 import json
 
@@ -16,8 +17,9 @@ class WindowCode(QSplitter):
         self.setHandleWidth(0)
 
         self.fst_frame = QTextEdit()
-        self.fst_frame.setFontPointSize(8)
-        self.fst_frame.setTabStopWidth(24)
+        self.fst_frame.setFontPointSize(12)
+        self.fst_frame.setTabStopWidth(36)
+        self.fst_frame.clear()
 
         snd_frame = QFrame(self)
         snd_frame.setFrameShape(QFrame.StyledPanel)
@@ -41,17 +43,30 @@ class SecondWindow(QWidget):
         super(SecondWindow, self).__init__()
         self.setWindowTitle('Result')
         self.resize(200, 200)
-        file = 'test.py'
+        file = 'test.cpp'#py
         f = open(file, 'w')
         f.write(textIn)
         f.close()
-        input = 3
-        pref = '(echo ' + str(input) + ' | python3 '
-        suff = ')>temp.txt'
-        expectedRes = '3'
-        expectedRes += '\n'
-        p = subprocess.Popen(pref+file+suff, shell=True)
+
+        # compiler = 'python3'
+
+        p = subprocess.Popen('g++ test.cpp', shell=True)
         p.wait()
+
+        compiler = './a.out'
+
+        input = "4 4\n0 1 2 5\n1 0 3 4\n2 3 0 7\n5 4 7 0\n"
+        # input = "input.txt"
+        fo = open("input.txt", 'w')
+        fo.write(input)
+        fo.close()
+        pref = '(cat ' + "input.txt" + ' | ' + str(compiler) + ''
+        suff = ')>temp.txt'
+        expectedRes = "YES\n2 1 1\n1 3 2\n2 4 4\n1 4 5\n"
+        # expectedRes += '\n'
+        # p = subprocess.Popen(pref+file+suff, shell=True)
+        p1 = subprocess.Popen(pref + suff, shell=True)
+        p1.wait()
         resFile = open("temp.txt", "r")
         resLst = resFile.readlines()
         res = ''
@@ -61,6 +76,8 @@ class SecondWindow(QWidget):
         result = ''
         os.remove(file)
         os.remove("temp.txt")
+        os.remove("input.txt")
+        os.remove("a.out")
         if res == expectedRes:
             result += 'OK'
         else:

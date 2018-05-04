@@ -1,21 +1,14 @@
 from copy import deepcopy
 from datetime import datetime, timedelta
 
-
-class Task:
-    def __init__(self, id, difficulty):
-        self.id = id
-        self.difficulty = difficulty
-
-
 class SummaryStatistic:
     def __init__(self, easy_amount, mid_amount, hard_amount):
         self.easy_amount = easy_amount
         self.mid_amount = mid_amount
         self.hard_amount = hard_amount
 
-
 class User:
+
     def __init__(self, login, passwd_hash, name):
         self.login = deepcopy(login)
         self.passwd_hash = deepcopy(passwd_hash)
