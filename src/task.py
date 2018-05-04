@@ -2,13 +2,13 @@ from enum import Enum
 import json
 
 
-class TaskType(Enum):
+class TaskType:
     TEST = 1
     YES_NO = 2
-    # CODING = 2
     SINGLE_ANSWER = 3
 
-class Difficulties(Enum):
+
+class Difficulties:
     EASY = 1
     MEDIUM = 2
     HARD = 3
