@@ -1,7 +1,7 @@
 import sys
-from LoginServer import LoginServer
-from LoginWidget import LoginWidget
-from RegisterWidget import Register
+from src.account.LoginServer import LoginServer
+from src.account.LoginWidget import LoginWidget
+from src.account.RegisterWidget import Register
 from PyQt5.QtWidgets import *
 
 

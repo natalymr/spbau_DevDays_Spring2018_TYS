@@ -2,7 +2,7 @@ import os
 import pickle
 import hashlib
 
-from User import User
+from src.account.User import User
 
 
 class LoginServer:
