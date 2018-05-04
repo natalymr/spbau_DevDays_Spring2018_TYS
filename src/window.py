@@ -7,9 +7,12 @@ from src.chat_window import WindowChat
 
 class Window(QWidget):
 
-    def __init__(self):
+    def __init__(self, owner, parent):
         super().__init__()
+        self.owner = owner
+        self.parent = parent
         self.initUI()
+        self.show()
 
     def initUI(self):
         self.setWindowTitle('TryYourSkills')
@@ -37,6 +40,11 @@ class Window(QWidget):
                             self.height() // 3])
         hbox.addWidget(splitter2)
         self.setLayout(hbox)
+
+    def closeEvent(self, event):
+        self.owner.current_widget = self.parent
+        self.parent.show()
+        event.accept()
 
     # def event(self, e):
     #     if e.type() == QEvent.Timer:

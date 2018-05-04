@@ -1,4 +1,5 @@
 from PyQt5.QtWidgets import *
+from src.window import Window
 
 
 class ProfileWidget(QWidget):
@@ -10,6 +11,7 @@ class ProfileWidget(QWidget):
         ql_login = QLabel('login:  %s' % user.login, self)
         ql_name = QLabel('name:   %s' % user.name, self)
         self.start_button = QPushButton('Start', self)
+        self.start_button.clicked.connect(self.handle_start)
         self.start_button.setMaximumSize(100, 80)
         layout = QVBoxLayout()
         layout.addWidget(ql_login)
@@ -23,4 +25,9 @@ class ProfileWidget(QWidget):
     def closeEvent(self, event):
         self.user.logout_callback()
         self.parent.show()
+        self.owner.current_widget = self.parent
         event.accept()
+
+    def handle_start(self):
+        self.hide()
+        self.owner.current_widget = Window(self.owner, self)

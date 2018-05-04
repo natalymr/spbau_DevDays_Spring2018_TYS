@@ -51,7 +51,7 @@ class User:
             if User.start_week_date(self.login_date) == User.start_week_date(task.date):
                 self.curr_week_task_solved.append(task)
 
-    def get_current_statistic(self):z
+    def get_current_statistic(self):
         pass
 
     @staticmethod

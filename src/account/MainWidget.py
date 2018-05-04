@@ -33,14 +33,3 @@ class MainWidget(QWidget):
         self.hide()
         self.owner.current_widget = LoginWidget(self.owner.login_server, self.owner, self)
 
-
-class WindowDispatcher:
-    def __init__(self, login_server_file_name):
-        self.login_server = LoginServer(login_server_file_name)
-        self.current_widget = MainWidget(self)
-
-
-if __name__ == '__main__':
-    app = QApplication(sys.argv)
-    w = WindowDispatcher('LoginServer.pickle')
-    sys.exit(app.exec_())
