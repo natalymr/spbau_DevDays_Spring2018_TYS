@@ -49,13 +49,13 @@ class ChatBox(QSplitter):
     def yes_click(self):
         answer = self.current_task.right_answers[0] == 1
         self.parent_window.answer_flush(answer, self.answer_box.yes_button)
-        self.parent.current_answers[self.current_task.id] = answer
+        self.parent_window.current_answers[self.current_task.id] = answer
 
     @pyqtSlot()
     def no_click(self):
         answer = self.current_task.right_answers[0] == 0
         self.parent_window.answer_flush(answer, self.answer_box.no_button)
-        self.parent.current_answers[self.current_task.id] = answer
+        self.parent_window.current_answers[self.current_task.id] = answer
 
     def test_question(self, task):
         self.current_task = task
@@ -64,9 +64,6 @@ class ChatBox(QSplitter):
         self.answer_box.v_test_box = QVBoxLayout()
         self.__make_checkbox(task.proposed_answers)
         self.answer_box.v_test_box.addStretch(1)
-        # go_button = QPushButton('Go', self.answer_box)
-        # go_button.clicked.connect(self.check_ckeckbox)
-        # self.answer_box.v_test_box.addWidget(go_button, 3)
         self.answer_box.setLayout(self.answer_box.v_test_box)
 
     def __make_checkbox(self, proposed_answers):
@@ -82,7 +79,7 @@ class ChatBox(QSplitter):
                 selected.append(i)
         answer = len(selected) == len(self.answers) and sorted(selected) == sorted(self.answers)
         self.parent_window.answer_flush(answer, self.answer_box)
-        self.parent.current_answers[self.current_task.id] = answer
+        self.parent_window.current_answers[self.current_task.id] = answer
 
     def single_question(self, task):
         self.current_task = task

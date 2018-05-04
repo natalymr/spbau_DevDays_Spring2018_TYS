@@ -21,8 +21,8 @@ class Window(QWidget):
         self.current_answers = dict()
         self.load_chat_tasks()
         self.show()
-        # self.chat_window.run_task(self.chat_tasks[1][1]) # yes no
-        self.chat_window.run_task(self.chat_tasks[1][5]) # test
+        self.chat_window.run_task(self.chat_tasks[1][1]) # yes no
+        # self.chat_window.run_task(self.chat_tasks[1][5]) # test
         # self.chat_window.run_task(self.chat_tasks[1][3]) # single
 
     def initUI(self):
