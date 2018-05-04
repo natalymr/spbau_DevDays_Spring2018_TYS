@@ -12,7 +12,7 @@ class WindowChat(QSplitter):
 
     def __init__(self, window):
         self.window = window
-        super().__init__(Qt.Vertical)
+        super(WindowChat, self).__init__(Qt.Vertical)
         self.grid = QGridLayout()
         self.text_window = QTextEdit()
         self.text_window.setFontPointSize(12)
