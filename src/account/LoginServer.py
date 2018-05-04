@@ -89,12 +89,12 @@ class LoginServer:
             elif difficulty_class == 1:
                 difficulty = 3
             result = randint(0, 1)
-            task = ChatTask(count, difficulty)
+            task = ChatTask(None, difficulty, id=count)
             task_array.append((task, result))
 
             for i in range(randint(1, 5)):
                 count += 1
-                task = ChatTask(count, 1)
+                task = ChatTask(None, 1, id=count)
                 result = randint(0, 1)
                 task_array.append((task, result))
             user.end_interview_callback(task_array)
@@ -116,7 +116,7 @@ class LoginServer:
         plt.plot(t, s, t, np.zeros_like(s), color='g', alpha=.74)
         plt.autoscale(enable=True, axis='x', tight=True)
         plt.show()
-        login_server.clean()
+        # login_server.clean()
 
 # LoginServer.test()
 
