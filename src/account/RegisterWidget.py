@@ -9,42 +9,43 @@ class Register(QWidget):
         super(Register, self).__init__()
         self.owner = owner
         self.parent = parent
-
         login_label = QLabel('login:')
-        passwd_label = QLabel('passwd:')
+        passwd_label = QLabel('password:')
         name_label = QLabel('name:')
-
         self.login_server = login_server
-
         self.textLogin = QLineEdit()
         self.textPasswd = QLineEdit()
         self.textPasswd.setEchoMode(QLineEdit.Password)
         self.textName = QLineEdit()
 
-        grid = QGridLayout()
-        grid.setSpacing(10)
-        grid.addWidget(login_label, 1, 0)
-        grid.addWidget(self.textLogin, 1, 1)
-        grid.addWidget(passwd_label, 2, 0)
-        grid.addWidget(self.textPasswd, 2, 1)
-        grid.addWidget(name_label, 3, 0)
-        grid.addWidget(self.textName, 3, 1)
+        label_layout = QVBoxLayout()
+        input_layout = QVBoxLayout()
+        label_layout.addWidget(login_label)
+        input_layout.addWidget(self.textLogin)
+        label_layout.addWidget(passwd_label)
+        input_layout.addWidget(self.textPasswd)
+        label_layout.addWidget(name_label)
+        input_layout.addWidget(self.textName)
+
+        form_layout = QHBoxLayout()
+        form_layout.addLayout(label_layout)
+        form_layout.addLayout(input_layout)
 
         self.buttonBack = QPushButton('Back', self)
         self.buttonBack.clicked.connect(self.handle_back)
-        self.buttonLogin = QPushButton('Login', self)
+        self.buttonLogin = QPushButton('Sign up', self)
         self.buttonLogin.clicked.connect(self.handle_register)
         button_layout = QHBoxLayout()
         button_layout.addWidget(self.buttonBack)
         button_layout.addWidget(self.buttonLogin)
 
         layout = QVBoxLayout()
-        layout.addLayout(grid)
+        layout.addLayout(form_layout)
         layout.addLayout(button_layout)
 
         self.setLayout(layout)
         self.setGeometry(300, 300, 280, 170)
-        self.setWindowTitle('QLineEdit')
+        self.setWindowTitle('TryYourSkills: Sign up')
         self.show()
 
     def handle_back(self):
@@ -59,7 +60,8 @@ class Register(QWidget):
             QMessageBox.warning(self, 'Error', 'All fields must be completed')
         elif self.login_server.register(login, passwd, name):
             self.login_server.dump()
-            self.owner.current_widget = ProfileWidget(self.login_server.login(login, passwd), self.owner, self.parent)
+            self.owner.current_widget = ProfileWidget(self.login_server.login(login, passwd),
+                                                      self.owner, self.parent)
             self.hide()
         else:
             QMessageBox.warning(self, 'Error', 'login are already exist')

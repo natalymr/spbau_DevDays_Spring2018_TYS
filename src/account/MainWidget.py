@@ -9,24 +9,23 @@ from PyQt5.QtWidgets import *
 
 
 class MainWidget(QWidget):
+
     def __init__(self, owner):
         super(MainWidget, self).__init__()
         self.owner = owner
 
-        self.button_register = QPushButton('Register', self)
+        self.button_register = QPushButton('Sign up', self)
         self.button_register.clicked.connect(self.handle_register)
-        self.button_register.setMaximumSize(100, 80)
-        self.button_login = QPushButton('Login', self)
+        self.button_login = QPushButton('Log in', self)
         self.button_login.clicked.connect(self.handle_login)
-        self.button_login.setMaximumSize(100, 80)
-        button_layout = QHBoxLayout()
+
+        button_layout = QVBoxLayout()
         button_layout.addWidget(self.button_register)
         button_layout.addWidget(self.button_login)
 
         self.setLayout(button_layout)
-        self.setGeometry(300, 300, 280, 170)
-        self.setWindowTitle('QMainWidget')
-        self.setWindowIcon(QIcon('web.jpg'))
+        self.setGeometry(300, 300, 300, 100)
+        self.setWindowTitle('TryYourSkills: Start')
         self.show()
 
     def handle_register(self):

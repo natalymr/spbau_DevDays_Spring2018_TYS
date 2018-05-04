@@ -6,6 +6,7 @@ from PyQt5.QtWidgets import *
 
 
 class LoginWidget(QWidget):
+
     def __init__(self, login_server, owner, parent):
         super(LoginWidget, self).__init__()
         self.owner = owner
@@ -13,7 +14,7 @@ class LoginWidget(QWidget):
         self.login_server = login_server
 
         login_label = QLabel('login:')
-        passwd_label = QLabel('passwd:')
+        passwd_label = QLabel('password:')
 
         self.login_server = login_server
 
@@ -21,29 +22,32 @@ class LoginWidget(QWidget):
         self.textPasswd = QLineEdit()
         self.textPasswd.setEchoMode(QLineEdit.Password)
 
-        grid = QGridLayout()
-        grid.setSpacing(10)
-        grid.addWidget(login_label, 1, 0)
-        grid.addWidget(self.textLogin, 1, 1)
-        grid.addWidget(passwd_label, 2, 0)
-        grid.addWidget(self.textPasswd, 2, 1)
+        label_layout = QVBoxLayout()
+        input_layout = QVBoxLayout()
+        label_layout.addWidget(login_label)
+        input_layout.addWidget(self.textLogin)
+        label_layout.addWidget(passwd_label)
+        input_layout.addWidget(self.textPasswd)
+
+        form_layout = QHBoxLayout()
+        form_layout.addLayout(label_layout)
+        form_layout.addLayout(input_layout)
 
         self.buttonBack = QPushButton('Back', self)
         self.buttonBack.clicked.connect(self.handle_back)
-        self.buttonLogin = QPushButton('Login', self)
+        self.buttonLogin = QPushButton('Log in', self)
         self.buttonLogin.clicked.connect(self.handle_login)
         button_layout = QHBoxLayout()
         button_layout.addWidget(self.buttonBack)
         button_layout.addWidget(self.buttonLogin)
 
         layout = QVBoxLayout()
-        layout.addLayout(grid)
+        layout.addLayout(form_layout)
         layout.addLayout(button_layout)
 
         self.setLayout(layout)
-
-        self.setGeometry(300, 300, 280, 170)
-        self.setWindowTitle('QLineEdit')
+        self.setGeometry(300, 300, 280, 150)
+        self.setWindowTitle('TryYourSkills: Log in')
         self.show()
 
     def handle_back(self):
@@ -55,11 +59,11 @@ class LoginWidget(QWidget):
         if user is not None:
             self.owner.current_widget = ProfileWidget(user, self.owner, self.parent)
         else:
-            self.textPasswd.setText("")
+            self.textPasswd.setText('')
             QMessageBox.warning(self, 'Error', 'Bad user or password')
 
     def closeEvent(self, event):
-        reply = QMessageBox.question(self, 'Message', "Are you sure to quit?",
+        reply = QMessageBox.question(self, 'Quit', 'Are you sure to quit?',
                                      QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
         if reply == QMessageBox.Yes:
             event.accept()
