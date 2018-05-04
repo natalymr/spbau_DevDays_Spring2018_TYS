@@ -12,7 +12,7 @@ class WindowChat(QSplitter):
     def __init__(self, window, difficulty):
         self.difficulty = difficulty
         self.parent = window
-        super().__init__(Qt.Vertical)
+        super(WindowChat, self).__init__(Qt.Vertical)
         self.chat_box = ChatBox(self)
         self.__create_interviewer_box()
         self.addWidget(self.info_window)
@@ -59,6 +59,7 @@ class WindowChat(QSplitter):
 
         hbox = QHBoxLayout(self.info_window)
         button = QPushButton('Back', splitter1)
+        button.clicked.connect(self.parent.handle_back)
         button.setFixedSize(100, 40)
 
         label_difficulty = QLabel(splitter1)

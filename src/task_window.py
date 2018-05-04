@@ -6,7 +6,7 @@ class WindowTask(QSplitter):
 
     def __init__(self, window):
         self.window = window
-        super().__init__(Qt.Vertical)
+        super(WindowTask, self).__init__(Qt.Vertical)
 
         self.setHandleWidth(0)
 
@@ -132,7 +132,10 @@ NO\n'
     #         pass
 
     def tick_status(self):
-        min = int(self.count/60)
+        if self.window is None:
+            self.clear_back()
+            return
+        min = int(self.count // 60)
         sec = int(self.count % 60)
         self.val = min + sec/100
         self.snd_frame.setValue(self.count*100/(self.totalMin*60))
@@ -147,3 +150,7 @@ NO\n'
         if self.count > 300:
             self.timer.stop()
 
+    def close(self):
+        self.timer.stop()
+        self.timer = None
+        super(WindowTask, self).close()

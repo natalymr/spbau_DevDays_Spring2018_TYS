@@ -12,7 +12,7 @@ from src.utils import CHAT_TASKS
 class Window(QWidget):
 
     def __init__(self, owner, parent):
-        super().__init__()
+        super(Window, self).__init__()
         self.owner = owner
         self.parent = parent
         self.initUI()
@@ -49,10 +49,20 @@ class Window(QWidget):
         self.setLayout(hbox)
 
     def closeEvent(self, event):
+        self.handle_back(can_close=False)
+        event.accept()
+
+    def handle_back(self, can_close=True):
+        self.task_window.close()
+        self.chat_window.close()
+        self.code_window.close()
         if self.owner != None:
             self.owner.current_widget = self.parent
             self.parent.show()
-            event.accept()
+        if can_close:
+            self.close()
+        else:
+            self.hide()
 
     def load_chat_tasks(self):
         for difficulty, file in CHAT_TASKS.items():
