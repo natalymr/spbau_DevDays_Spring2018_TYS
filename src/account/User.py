@@ -1,15 +1,7 @@
 from copy import deepcopy
 from datetime import datetime, timedelta
-
-
-class Task:
-    def __init__(self, name, score, date):
-        self.name = name
-        self.score = score
-        self.date = date
-
-
 class User:
+
     def __init__(self, login, passwd_hash, name):
         self.login = deepcopy(login)
         self.passwd_hash = deepcopy(passwd_hash)

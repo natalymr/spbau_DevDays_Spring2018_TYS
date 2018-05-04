@@ -10,24 +10,29 @@ class ChatBox(QSplitter):
         self.parent_window = parent
         super().__init__(Qt.Vertical)
 
+        self.dialog_box = QTextEdit()
+        self.dialog_box.setFontPointSize(12)
+        self.dialog_box.setTabStopWidth(24)
+        self.dialog_box.setReadOnly(True)
+        self.parent_window.set_style(self.dialog_box)
+        self.dialog_box.setPlainText('Hello!')
+
         self.question_box = QTextEdit()
         self.question_box.setFontPointSize(12)
         self.question_box.setTabStopWidth(24)
         self.question_box.setReadOnly(True)
         self.parent_window.set_style(self.question_box)
-
         self.create_answer_box()
 
+        self.addWidget(self.dialog_box)
         self.addWidget(self.question_box)
         self.addWidget(self.answer_box)
         self.setSizes([self.width() // 2,
                        self.width() // 2])
 
     def yes_no_question(self, task):
-        test_text = 'cvbhnjkmvlweon jnfwie ' \
-                    'fiwjfowiejofwijfoei jwdqj 2ejfpo2' \
-                    'fp2o3jojmv   oefjp2jf2?'
-        self.question_box.setPlainText(test_text)
+        self.current_task = task
+        self.question_box.setPlainText(self.current_task.legend)
         self.answer_box.yes_button = QPushButton('YES', self)
         self.answer_box.yes_button.clicked.connect(self.yes_click)
         self.answer_box.no_button = QPushButton('NO', self)
@@ -42,32 +47,32 @@ class ChatBox(QSplitter):
 
     @pyqtSlot()
     def yes_click(self):
-        self.parent_window.answer_flush(True, self.answer_box.yes_button)
-        print('YES button click')
+        answer = self.current_task.right_answers[0] == 1
+        self.parent_window.answer_flush(answer, self.answer_box.yes_button)
+        self.parent.current_answers[self.current_task.id] = answer
 
     @pyqtSlot()
     def no_click(self):
-        self.parent_window.answer_flush(False, self.answer_box.no_button)
-        print('NO button click')
+        answer = self.current_task.right_answers[0] == 0
+        self.parent_window.answer_flush(answer, self.answer_box.no_button)
+        self.parent.current_answers[self.current_task.id] = answer
 
-    def check_box(self, task):
-        tests = ['aaaaaaa', 'aaaaaaaaaaaaa',
-                 'aaaaaaaaaaaaaa', 'aaaaaaaa',
-                 'aaaaaaaaaaaaaaaaaaaaaaaa']
-        self.answers = [2]
+    def test_question(self, task):
+        self.current_task = task
+        self.question_box.setPlainText(self.current_task.legend)
+        self.answers = task.right_answers
         self.answer_box.v_test_box = QVBoxLayout()
-        self.make_checkbox(tests)
+        self.__make_checkbox(task.proposed_answers)
         self.answer_box.v_test_box.addStretch(1)
         go_button = QPushButton('Go', self.answer_box)
         go_button.clicked.connect(self.check_ckeckbox)
         self.answer_box.v_test_box.addWidget(go_button, 3)
         self.answer_box.setLayout(self.answer_box.v_test_box)
-        # self.show()
 
-    def make_checkbox(self, tests):
+    def __make_checkbox(self, proposed_answers):
         self.checkbox_list = []
-        for i in range(len(tests)):
-            self.checkbox_list.append(QCheckBox(tests[i], self.answer_box))
+        for i in range(len(proposed_answers)):
+            self.checkbox_list.append(QCheckBox(proposed_answers[i], self.answer_box))
             self.answer_box.v_test_box.addWidget(self.checkbox_list[i], i)
 
     def check_ckeckbox(self):
@@ -75,8 +80,14 @@ class ChatBox(QSplitter):
         for i, check_item in enumerate(self.checkbox_list):
             if check_item.isChecked():
                 selected.append(i)
-        correct = len(selected) == len(self.answers) and sorted(selected) == sorted(self.answers)
-        self.parent_window.answer_flush(correct, self.answer_box)
+        answer = len(selected) == len(self.answers) and sorted(selected) == sorted(self.answers)
+        self.parent_window.answer_flush(answer, self.answer_box)
+        self.parent.current_answers[self.current_task.id] = answer
+
+    def single_question(self, task):
+        self.current_task = task
+        self.question_box.setPlainText(self.current_task.legend)
+        self.answers = task.right_answers
 
     def default_view(self):
         self.question_box.setPlainText('')

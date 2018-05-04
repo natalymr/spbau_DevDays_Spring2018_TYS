@@ -11,7 +11,7 @@ from src.utils import Design
 class WindowChat(QSplitter):
 
     def __init__(self, window):
-        self.window = window
+        self.parent = window
         super().__init__(Qt.Vertical)
         self.grid = QGridLayout()
         self.text_window = QTextEdit()
@@ -46,9 +46,6 @@ class WindowChat(QSplitter):
         self.answer_botton.setShortcut(Qt.Key_Enter)
         self.answer_botton.move(self.width() // 10,
                                 self.height() // 10)
-        # self.chat_box.default_view()
-        self.chat_box.check_box(10)
-        self.chat_box.yes_no_question(10)
 
     @staticmethod
     def set_style(window):
@@ -57,17 +54,17 @@ class WindowChat(QSplitter):
         window.setFrameShape(QFrame.Box)
         window.setFrameShadow(QFrame.Plain)
 
-    def update_task(self, task):
-        if task.type != TaskType.TEST:
-            test = self.make_test(task)
-
     @pyqtSlot()
     def answer_click(self):
+        # if self.chat_box.current_task.id == 1:
+        #     self.chat_box.check_ckeckbox()
+        #     return
         answer = self.text_window.toPlainText()
+        right_answers = self.chat_box.current_task.right_answers
         self.text_window.setPlainText(answer)
         if answer:
             correct = False
-            if answer.lower() == 'kek':
+            if answer.lower().replace(' ', '') in right_answers:
                 correct = True
             self.answer_flush(correct, self.text_window)
             QApplication.processEvents()
@@ -96,3 +93,14 @@ class WindowChat(QSplitter):
         time.sleep(0.4)
         obj.setStyleSheet(Design.DEFAULT_STYLE)
         time.sleep(0.2)
+
+    def run_task(self, task):
+        TEST = 1
+        YES_NO = 2
+        SINGLE_ANSWER = 3
+        if task.type == TEST:
+            return self.chat_box.test_question(task)
+        if task.type == YES_NO:
+            return self.chat_box.yes_no_question(task)
+        if task.type == SINGLE_ANSWER:
+            return self.chat_box.single_question(task)

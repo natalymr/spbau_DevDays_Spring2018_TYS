@@ -3,6 +3,10 @@ from PyQt5.QtCore import *
 from src.task_window import WindowTask
 from src.code_window import WindowCode
 from src.chat_window import WindowChat
+from src.task import ChatTask
+import json
+import random
+from src.utils import CHAT_TASKS
 
 
 class Window(QWidget):
@@ -12,7 +16,14 @@ class Window(QWidget):
         self.owner = owner
         self.parent = parent
         self.initUI()
+        self.asked_tasks = dict()
+        self.chat_tasks = dict()
+        self.current_answers = dict()
+        self.load_chat_tasks()
         self.show()
+        # self.chat_window.run_task(self.chat_tasks[1][1]) # yes no
+        self.chat_window.run_task(self.chat_tasks[1][5]) # test
+        # self.chat_window.run_task(self.chat_tasks[1][3]) # single
 
     def initUI(self):
         self.setWindowTitle('TryYourSkills')
@@ -43,19 +54,22 @@ class Window(QWidget):
         self.setLayout(hbox)
 
     def closeEvent(self, event):
-        self.owner.current_widget = self.parent
-        self.parent.show()
-        event.accept()
+        if self.owner != None:
+            self.owner.current_widget = self.parent
+            self.parent.show()
+            event.accept()
 
-    # def event(self, e):
-    #     if e.type() == QEvent.Timer:
-    #         print('TIMER ends')
-    #         return True
-    #
-    #     if e.type() == QEvent.Hide:
-    #         print('hide')
-    #         return True
-    #
-    #     if e.type() == QEvent.Close:
-    #         print('close')
-    #         return True
+    def load_chat_tasks(self):
+        for difficulty, file in CHAT_TASKS.items():
+            with open(file) as json_file:
+                self.asked_tasks[difficulty] = dict()
+                self.chat_tasks[difficulty] = dict()
+                jsons = json.load(json_file)
+                for j in jsons:
+                    i = j['id']
+                    self.chat_tasks[difficulty].update({i: ChatTask(j, difficulty)})
+
+    def run_chat_task(self, difficulty):
+        current_task = random.choice(self.chat_tasks[difficulty].items())
+        del self.chat_tasks[difficulty][current_task.id]
+        result = self.chat_window.run_task(current_task)

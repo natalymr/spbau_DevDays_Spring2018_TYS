@@ -1,5 +1,3 @@
-import sys
-from src.account.LoginServer import LoginServer, User
 from src.account.ProfileWidget import ProfileWidget
 from PyQt5.QtWidgets import *
 
@@ -64,6 +62,6 @@ class Register(QWidget):
                                                       self.owner, self.parent)
             self.hide()
         else:
-            QMessageBox.warning(self, 'Error', 'login are already exist')
+            QMessageBox.warning(self, 'Error', 'Login are already exist')
 
 

@@ -1,8 +1,3 @@
-import sys
-
-from PyQt5.QtGui import QIcon
-
-from src.account.LoginServer import LoginServer
 from src.account.LoginWidget import LoginWidget
 from src.account.RegisterWidget import Register
 from PyQt5.QtWidgets import *

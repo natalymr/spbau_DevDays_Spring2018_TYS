@@ -8,3 +8,8 @@ class Design:
     DEFAULT_STYLE = 'background-color: {};color: rgb(0,0,0)'.format(DEFAULT_COLOR)
     RIGHT_STYLE = 'background-color: {};color: rgb(0,0,0)'.format(RIGHT_COLOR)
     WRONG_STYLE = 'background-color: {};color: rgb(0,0,0)'.format(WRONG_COLOR)
+
+
+CHAT_TASKS = {1: 'src/tasks/chat_tasks_1.json'} #,
+              # 2: 'src/tasks/chat_tasks_2.json',
+              # 3: 'src/tasks/chat_tasks_3.json'}
