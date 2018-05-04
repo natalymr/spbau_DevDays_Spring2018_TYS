@@ -28,6 +28,7 @@ class Window(QWidget):
         self.code_window = WindowCode(self)
 
         splitter1 = QSplitter(Qt.Vertical)
+        splitter1.setHandleWidth(0)
         splitter1.addWidget(self.task_window)
         splitter1.addWidget(self.code_window)
         splitter1.setSizes([self.width() // 3,
