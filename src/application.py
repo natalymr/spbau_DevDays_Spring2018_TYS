@@ -4,11 +4,10 @@ from PyQt5.QtWidgets import QApplication
 from enum import Enum
 
 
-class TaskType(Enum):
-    TEST = 1
-    CODING = 2
-    YES_NO = 3
-    SINGLE_ANSWER = 4
+class Difficulties(Enum):
+    EASY = 1
+    MEDIUM = 2
+    HARD = 3
 
 
 class App:

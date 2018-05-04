@@ -1,6 +1,11 @@
 from PyQt5.QtWidgets import *
-from PyQt5.QtCore import QDate, QTime, Qt
+from PyQt5.QtCore import *
+from PyQt5.QtGui import *
+from src.task import *
 from src.application import *
+from src.chat_box import ChatBox
+import time
+from src.utils import Design
 
 
 class WindowChat(QSplitter):
@@ -8,70 +13,86 @@ class WindowChat(QSplitter):
     def __init__(self, window):
         self.window = window
         super().__init__(Qt.Vertical)
-
         self.grid = QGridLayout()
         self.text_window = QTextEdit()
         self.text_window.setFontPointSize(12)
         self.text_window.setTabStopWidth(24)
-        self.text_window.setLineWidth(2)
-        self.text_window.setFrameShape(QFrame.Box)
-        self.text_window.setFrameShadow(QFrame.Plain)
+        self.set_style(self.text_window)
+        self.text_window.setStyleSheet(Design.DEFAULT_STYLE)
 
         self.info_window = QFrame(self)
         self.info_window.setFrameShape(QFrame.StyledPanel)
-        self.info_window.setLineWidth(2)
-        self.info_window.setFrameShape(QFrame.Box)
-        self.info_window.setFrameShadow(QFrame.Plain)
+        self.set_style(self.info_window)
 
-        self.chat_window = QFrame(self)
-        self.chat_window.setFrameShape(QFrame.StyledPanel)
-        self.chat_window.setLineWidth(2)
-        self.chat_window.setFrameShape(QFrame.Box)
-        self.chat_window.setFrameShadow(QFrame.Plain)
-        # self.chat_area.setStyleSheet("background-color: rgb(0, 255, 0)")
+        l = QLabel(self.info_window)
+        pixmap = QPixmap('boss.jpg')
+        l.setPixmap(pixmap)
+        vvbox = QVBoxLayout()
+        vvbox.addWidget(l)
+        self.info_window.setLayout(vvbox)
+
+        self.chat_box = ChatBox(self)
 
         self.addWidget(self.info_window)
-        self.addWidget(self.chat_window)
+        self.addWidget(self.chat_box)
         self.addWidget(self.text_window)
-        self.setSizes([self.width() * 2 // 10,
-                       self.width() * 7 // 10,
-                       self.width() * 1 // 10])
+        self.setSizes([self.width() * 3 // 10,
+                       self.width() * 5 // 10,
+                       self.width() * 2 // 10])
 
-        answer_botton = QPushButton('Answer', self)
-        answer_botton.resize(answer_botton.sizeHint())
-        answer_botton.setShortcut(Qt.Key_Enter)
-        answer_botton.move(self.width() // 10, self.width() // 10)
-        self.make_test(10)
+        self.answer_botton = QPushButton('Answer', self)
+        self.answer_botton.clicked.connect(self.answer_click)
+        self.answer_botton.resize(self.answer_botton.sizeHint())
+        self.answer_botton.setShortcut(Qt.Key_Enter)
+        self.answer_botton.move(self.width() // 10,
+                                self.height() // 10)
+        # self.chat_box.default_view()
+        self.chat_box.check_box(10)
+        self.chat_box.yes_no_question(10)
+
+    @staticmethod
+    def set_style(window):
+        window.setFrameShape(QFrame.StyledPanel)
+        window.setLineWidth(2)
+        window.setFrameShape(QFrame.Box)
+        window.setFrameShadow(QFrame.Plain)
 
     def update_task(self, task):
         if task.type != TaskType.TEST:
             test = self.make_test(task)
 
+    @pyqtSlot()
+    def answer_click(self):
+        answer = self.text_window.toPlainText()
+        self.text_window.setPlainText(answer)
+        if answer:
+            correct = False
+            if answer.lower() == 'kek':
+                correct = True
+            self.answer_flush(correct, self.text_window)
+            QApplication.processEvents()
+            time.sleep(0.2)
+            print(answer)
+        self.text_window.setPlainText('')
 
-    def make_test(self, task):
-        tests = ['aaaaaaa', 'aaaaaaaaaaaaa',
-                 'aaaaaaaaaaaaaa', 'aaaaaaaa']
-        go_button = QPushButton('Go!')
-        go_button.setShortcut(Qt.Key_Enter)
-        go_button.setFixedSize(50, 30)
-        go_button.setGeometry(self.chat_window.width() // 2,
-                              self.chat_window.height() * 4 // 5, 50, 30)
+    @pyqtSlot()
+    def change_difficulty(self):
+        pass
 
-        go_button.move(self.width() // 10, self.width() // 10)
+    def getInteger(self):
+        i, okPressed = QInputDialog.getInt\
+            (self, 'Difficulty', 'level', 28, 0, 100, 1)
+        if okPressed:
+            print(i)
 
-        # hbox = QHBoxLayout()
-        hbox = QVBoxLayout()
-        test_group = QGroupBox('Test')
-        test_group.move(0, 0)
-        test_group.setFixedSize(len(max(tests, key=lambda x: len(x))) * 10 + 50,
-                       len(tests) * 30)
-        hbox.addWidget(go_button)
-        form = QFormLayout()
-        form.addRow(hbox)
-        form.addRow(test_group)
-        for i in range(len(tests)):
-            cb = QCheckBox(tests[i], self.chat_window)
-            cb.move(self.width() // 20, self.height() * i // 15)
-        self.chat_window.setLayout(form)
-
-
+    @staticmethod
+    def answer_flush(correct, obj):
+        time.sleep(0.5)
+        flush = Design.WRONG_STYLE
+        if correct:
+            flush = Design.RIGHT_STYLE
+        obj.setStyleSheet(flush)
+        QApplication.processEvents()
+        time.sleep(0.4)
+        obj.setStyleSheet(Design.DEFAULT_STYLE)
+        time.sleep(0.2)

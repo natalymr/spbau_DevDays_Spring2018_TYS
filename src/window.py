@@ -1,5 +1,5 @@
 from PyQt5.QtWidgets import QWidget, QSplitter, QHBoxLayout, QDesktopWidget
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import *
 from src.task_window import WindowTask
 from src.code_window import WindowCode
 from src.chat_window import WindowChat
@@ -37,3 +37,16 @@ class Window(QWidget):
                             self.height() // 3])
         hbox.addWidget(splitter2)
         self.setLayout(hbox)
+
+    # def event(self, e):
+    #     if e.type() == QEvent.Timer:
+    #         print('TIMER ends')
+    #         return True
+    #
+    #     if e.type() == QEvent.Hide:
+    #         print('hide')
+    #         return True
+    #
+    #     if e.type() == QEvent.Close:
+    #         print('close')
+    #         return True
