@@ -2,8 +2,8 @@ import os
 import pickle
 import hashlib
 
-from src.account.User import User, Task
-
+from src.account.User import User
+from src.task import ChatTask
 
 class LoginServer:
     def __init__(self, file_name):
@@ -89,12 +89,12 @@ class LoginServer:
             elif difficulty_class == 1:
                 difficulty = 3
             result = randint(0, 1)
-            task = Task(count, difficulty)
+            task = ChatTask(count, difficulty)
             task_array.append((task, result))
 
             for i in range(randint(1, 5)):
                 count += 1
-                task = Task(count, 1)
+                task = ChatTask(count, 1)
                 result = randint(0, 1)
                 task_array.append((task, result))
             user.end_interview_callback(task_array)

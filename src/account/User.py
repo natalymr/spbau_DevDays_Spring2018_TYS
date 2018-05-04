@@ -1,11 +1,13 @@
 from copy import deepcopy
 from datetime import datetime, timedelta
 
+
 class SummaryStatistic:
     def __init__(self, easy_amount, mid_amount, hard_amount):
         self.easy_amount = easy_amount
         self.mid_amount = mid_amount
         self.hard_amount = hard_amount
+
 
 class User:
 
@@ -15,9 +17,9 @@ class User:
         self.name = name
         self.born_date = datetime.now().date()
         self.login_date = datetime.now().date()
-        self.per_week_task_solved = dict()      # week -> list of pair (task, result)
-        self.best_task_solved = dict()          # ids -> score
-        self.flatten_task_proposed = set()      # set of ids
+        self.per_week_task_solved = dict()  # week -> list of pair (task, result)
+        self.best_task_solved = dict()  # ids -> score
+        self.flatten_task_proposed = set()  # set of ids
         self.curr_session_task_solved = list()  # list of tasks
 
     def login_callback(self):
