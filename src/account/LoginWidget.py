@@ -1,17 +1,16 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
-from src.account.ProfileWidget import ProfileWidget
+from src.account.ProfileLayout import ProfileLayout
 from PyQt5.QtWidgets import *
 
 
 class LoginWidget(QVBoxLayout):
-    def __init__(self, login_server, owner, parent):
+    def __init__(self, login_server, main_window, account_layout):
         super(LoginWidget, self).__init__()
-        self.owner = owner
-        self.parent = parent
+        self.main_window = main_window
+        self.account_layout = account_layout
         self.login_server = login_server
-        self.widget = None
 
         login_label = QLabel('login:')
         passwd_label = QLabel('password:')
@@ -48,23 +47,16 @@ class LoginWidget(QVBoxLayout):
         self.addLayout(layout)
         self.windowTitle = 'TryYourSkills: Log in'
 
-    def hide(self):
-        self.widget.hide()
-    def show(self):
-        self.widget.show()
-
     def handle_back(self):
-        self.owner.current_widget = self.parent
-        self.parent.show()
-        self.widget.close()
+        self.account_layout.set_start_page()
 
     def handle_login(self):
         user = self.login_server.login(self.textLogin.text(), self.textPasswd.text())
         if user is not None:
-            self.owner.current_widget = ProfileWidget.create(self.login_server, user, self.owner)
+            self.account_layout.set_profile(user)
         else:
             self.textPasswd.setText('')
-            QMessageBox.warning(self.widget, 'Error', 'Bad user or password')
+            QMessageBox.warning(self.main_window, 'Error', 'Bad user or password')
 
     # def closeEvent(self, event):
     #     reply = QMessageBox.question(self, 'Quit', 'Are you sure to quit?',

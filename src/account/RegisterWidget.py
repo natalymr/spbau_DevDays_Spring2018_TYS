@@ -1,13 +1,12 @@
-from src.account.ProfileWidget import ProfileWidget
+from src.account.ProfileLayout import ProfileLayout
 from PyQt5.QtWidgets import *
 
 
 class Register(QVBoxLayout):
-    def __init__(self, login_server, owner, parent):
+    def __init__(self, login_server, main_window, account_layout):
         super(Register, self).__init__()
-        self.owner = owner
-        self.parent = parent
-        self.widget = None
+        self.main_window = main_window
+        self.account_layout = account_layout
 
         login_label = QLabel('login:')
         passwd_label = QLabel('password:')
@@ -46,29 +45,21 @@ class Register(QVBoxLayout):
         self.addLayout(layout)
         self.windowTitle = 'TryYourSkills: Sign up'
 
-    def hide(self):
-        self.widget.hide()
-    def show(self):
-        self.widget.show()
-
     def handle_back(self):
-        self.parent.show()
-        self.owner.current_widget = self.parent
-        self.widget.close()
+        self.account_layout.set_start_page()
 
     def handle_register(self):
         login = self.textLogin.text()
         passwd = self.textPasswd.text()
         name = self.textName.text()
         if 0 == len(login) or 0 == len(passwd) or 0 == len(name):
-            QMessageBox.warning(self.widget, 'Error', 'All fields must be completed')
+            QMessageBox.warning(self.main_window, 'Error', 'All fields must be completed')
         elif self.login_server.register(login, passwd, name):
             self.login_server.dump()
             user = self.login_server.login(login, passwd)
-            self.owner.current_widget = ProfileWidget.create(self.login_server, user, self.owner)
-            self.hide()
+            self.account_layout.set_profile(user)
         else:
-            QMessageBox.warning(self.widget, 'Error', 'Login are already exist')
+            QMessageBox.warning(self.main_window, 'Error', 'Login are already exist')
 
     # def closeEvent(self, event):
     #     reply = QMessageBox.question(self, 'Quit', 'Are you sure to quit?',
@@ -78,13 +69,3 @@ class Register(QVBoxLayout):
     #     else:
     #         event.ignore()
 
-    @staticmethod
-    def create(login_server, owner, parent):
-        register_layout = Register(login_server, owner, parent)
-        w = QWidget()
-        w.setLayout(register_layout)
-        register_layout.widget = w
-        w.setGeometry(300, 300, 280, 170)
-        w.setWindowTitle(register_layout.windowTitle)
-        w.show()
-        return w

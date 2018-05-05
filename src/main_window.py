@@ -1,32 +1,41 @@
 from PyQt5.QtWidgets import *
+
+from src.account_window import AccountLayout
 from src.window import InterviewWindow
 from src.account.LoginServer import LoginServer
-from src.task_window import WindowTask
-from src.code_window import WindowCode
-from src.chat_window import WindowChat
-from PyQt5.QtCore import Qt
-import subprocess
-import json
+from src.account.StatisticWindow import StatisticWindow
 
 
-class MainWindow(QMainWindow):
+class MainWindow(QWidget):
+
+    @staticmethod
+    def clear_layout(layout):
+        if layout is not None:
+            while layout.count():
+                item = layout.takeAt(0)
+                widget = item.widget()
+                if widget is not None:
+                    widget.deleteLater()
+                else:
+                    MainWindow.clear_layout(item.layout())
 
     def __init__(self):
         super(MainWindow, self).__init__()
-        self.init_content()
-        self.show()
+        self.current_user = None
+        self.current_layout = None
+        self.login_server = LoginServer('LoginServer.pickle')
 
-    def init_content(self):
-        self.interview_results = list()
-        self.current_window = None
-        self.account_window = None
-        self.interview_window = InterviewWindow(self, self, 1)
-        self.statistic_window = None
         self.setWindowTitle('TryYourSkills')
+        self.interview_results = list()
+        # self.account_layout = AccountLayout(self)
+        # self.interview_window =
+
         self.setGeometry(0, 0,
                          QDesktopWidget().availableGeometry().width(),
                          QDesktopWidget().availableGeometry().height())
-        self.set_interview_window()
+
+        self.set_account_window()
+        self.show()
 
     def accept_result(self, result):
         self.interview_results.append((self.current_task, result))
@@ -35,15 +44,24 @@ class MainWindow(QMainWindow):
         return self.interview_results
 
     def set_interview_window(self):
-        if self.current_window:
-            self.current_window.setParent(None)
-        self.current_window = self.interview_window
-        self.current_window.setParent(self)
-        self.setCentralWidget(self.current_window)
+        self.__pre_set()
+        self.current_layout = InterviewWindow(self, self, 1)
+        self.__post_set()
 
     def set_statistics_window(self):
-        if self.current_window:
-            self.current_window.setParent(None)
-        self.current_window = self.interview_window
-        self.current_window.setParent(self)
-        self.setCentralWidget(self.current_window)
+        self.__pre_set()
+        self.current_layout = StatisticWindow(self.current_user)
+        self.__post_set()
+
+    def set_account_window(self):
+        self.__pre_set()
+        self.current_layout = AccountLayout(self)
+        self.__post_set()
+
+    def __pre_set(self):
+        if self.current_layout is not None:
+            self.clear_layout(self.current_layout)
+            self.current_layout.setParent(None)
+
+    def __post_set(self):
+        self.setLayout(self.current_layout)

@@ -1,13 +1,13 @@
 from PyQt5.QtGui import QFont
 from PyQt5.QtWidgets import *
-from src.window import Window
+from src.window import InterviewWindow
 
 
 class SelectDifficultyWidget(QVBoxLayout):
-    def __init__(self, owner, parent):
+    def __init__(self, main_window, account_layout):
         super(SelectDifficultyWidget, self).__init__()
-        self.parent = parent
-        self.owner = owner
+        self.parent = account_layout
+        self.owner = main_window
         self.widget = None
 
         label = QLabel('<center> Select your difficulty: <\center>')
@@ -27,32 +27,17 @@ class SelectDifficultyWidget(QVBoxLayout):
         layout.addWidget(hard_button)
 
         self.addLayout(layout)
-        self.windowTitle = 'TryYourSkills'
-
-    def hide(self):
-        self.widget.hide()
-    def show(self):
-        self.widget.show()
+        self.windowTitle = 'TryYourSkills: Select your difficulty'
 
     def handle_easy(self):
         self.hide()
-        self.owner.current_widget = Window(self.owner, self.parent, difficulty=1)
+        self.owner.current_widget = InterviewWindow(self.owner, self.parent, difficulty=1)
 
     def handle_mid(self):
         self.hide()
-        self.owner.current_widget = Window(self.owner, self.parent, difficulty=2)
+        self.owner.current_widget = InterviewWindow(self.owner, self.parent, difficulty=2)
 
     def handle_hard(self):
         self.hide()
-        self.owner.current_widget = Window(self.owner, self.parent, difficulty=3)
+        self.owner.current_widget = InterviewWindow(self.owner, self.parent, difficulty=3)
 
-    @staticmethod
-    def create(owner, parent):
-        selectLayout = SelectDifficultyWidget(owner, parent)
-        w = QWidget()
-        w.setLayout(selectLayout)
-        selectLayout.widget = w
-        w.setGeometry(300, 300, 300, 100)
-        w.setWindowTitle(selectLayout.windowTitle)
-        w.show()
-        return w
