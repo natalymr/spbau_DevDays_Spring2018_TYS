@@ -14,7 +14,6 @@ from PyQt5.QtWidgets import QTableWidget
 from PyQt5.QtWidgets import *
 import json
 
-from src.application import *
 from src.task import TaskType
 
 
@@ -46,12 +45,12 @@ class WindowTask(QSplitter):
 
         with open("src/tasks/coding_problems.json", "r") as f:
             self.st = json.load(f)
-        ste = self.st[self.num_code]
+        ste = self.st[self.num_code - 1]
         self.prob_name = ste["name"]
         self.prob_name_t = ste["problem_name_t"]
         # self.prob_name_t = ste["problem_name_t"]
         self.description_tex = ste["legend"]
-        self.texToHtml(self.description_tex, "description")
+        # self.texToHtml(self.description_tex, "description")
 
         # with open("src/tasks/tests_for_all_problems.json", "r") as file_r:
         #     self.tests = json.load(file_r)
@@ -59,7 +58,7 @@ class WindowTask(QSplitter):
         self.inTex = ste["input"]
         self.outTex = ste["output"]
         text = "Input:\n\n" + self.inTex + "\n\nOutput:\n\n" + self.outTex
-        self.texToHtml(text, "io")
+        # self.texToHtml(text, "io")
 
         self.sampleTests = ste["sampleTests"]
 
@@ -68,7 +67,7 @@ class WindowTask(QSplitter):
             examplesIn_tex = ioTex["input"].replace("\n", "\\newline")
             examplesOut_tex = ioTex["output"].replace("\n", "\\newline")
             self.examplesTex += "\n\ninput:\n\n" + examplesIn_tex + "\n\noutput:\n\n" + examplesOut_tex
-        self.texToHtml(self.examplesTex, "examples")
+        # self.texToHtml(self.examplesTex, "examples")
 
 
         self.up_text.setText(self.prob_name)
