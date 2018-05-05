@@ -15,6 +15,7 @@ class Window(QWidget):
         super(Window, self).__init__()
         self.owner = owner
         self.parent = parent
+        self.alive = True
         self.difficulty = difficulty
         self.initUI()
         self.asked_tasks = dict()
@@ -54,18 +55,18 @@ class Window(QWidget):
         event.accept()
 
     def handle_back(self, can_close=True):
-        self.task_window.close()
-        self.chat_window.close()
-        self.code_window.close()
-        if self.owner != None:
-            self.owner.current_widget = self.parent
-            self.parent.show()
-        if can_close:
-            print('before close')
-            self.hide()
-        else:
-            self.hide()
-        print('after close')
+        if self.alive:
+            self.alive = False
+            self.task_window.close()
+            self.chat_window.close()
+            self.code_window.close()
+            if self.owner != None:
+                self.owner.current_widget = self.parent
+                self.parent.show()
+            if can_close:
+                self.close()
+            else:
+                self.hide()
 
     def load_chat_tasks(self):
         for difficulty, file in CHAT_TASKS.items():
@@ -80,7 +81,6 @@ class Window(QWidget):
     def run_chat_task(self, difficulty):
         if len(self.chat_tasks[difficulty]):
             id, current_task = random.choice(list(self.chat_tasks[difficulty].items()))
-            print(id, current_task)
             del self.chat_tasks[difficulty][id]
             self.chat_window.run_task(current_task)
 

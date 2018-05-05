@@ -116,14 +116,13 @@ class WindowTask(QSplitter):
             pass
 
     def tick_status(self):
-        print(self.window.current_answers)
         min = int(self.count/60)
         sec = int(self.count % 60)
         self.val = min + sec/100
         self.snd_frame.setValue(self.count*100/(self.totalMin*60))
         self.snd_frame.setFormat('%.02f' % self.val)
         self.count += 1
-        if self.count % 10 == 0:
+        if self.count % 5 == 0:
             self.window.run_chat_task(difficulty=1)
         if self.count > 300:
             self.timer.stop()

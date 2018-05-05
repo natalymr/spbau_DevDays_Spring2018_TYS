@@ -47,7 +47,7 @@ class WindowChat(QSplitter):
             self.chat_box.single_question(task)
 
     def set_answer(self, task, answer):
-        self.parent.current_answers.append(task, answer)
+        self.parent.current_answers.append((task, answer))
 
     def __create_interviewer_box(self):
         self.info_window = QFrame(self)
