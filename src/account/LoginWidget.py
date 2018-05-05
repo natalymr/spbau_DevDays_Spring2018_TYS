@@ -46,7 +46,9 @@ class LoginWidget(QWidget):
         layout.addLayout(button_layout)
 
         self.setLayout(layout)
-        self.setGeometry(300, 300, 280, 150)
+        self.setGeometry(0, 0,
+                         QDesktopWidget().availableGeometry().width(),
+                         QDesktopWidget().availableGeometry().height())
         self.setWindowTitle('TryYourSkills: Log in')
         self.show()
 

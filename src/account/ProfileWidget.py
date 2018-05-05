@@ -28,7 +28,9 @@ class ProfileWidget(QWidget):
         layout.addWidget(self.statistic_button)
 
         self.setLayout(layout)
-        self.setGeometry(300, 300, 300, 100)
+        self.setGeometry(0, 0,
+                         QDesktopWidget().availableGeometry().width(),
+                         QDesktopWidget().availableGeometry().height())
         self.setWindowTitle('TryYourSkills: Profile')
         self.show()
 

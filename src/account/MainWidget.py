@@ -19,7 +19,9 @@ class MainWidget(QWidget):
         button_layout.addWidget(self.button_login)
 
         self.setLayout(button_layout)
-        self.setGeometry(300, 300, 300, 100)
+        self.setGeometry(0, 0,
+                         QDesktopWidget().availableGeometry().width(),
+                         QDesktopWidget().availableGeometry().height())
         self.setWindowTitle('TryYourSkills: Start')
         self.show()
 
@@ -31,3 +33,10 @@ class MainWidget(QWidget):
         self.hide()
         self.owner.current_widget = LoginWidget(self.owner.login_server, self.owner, self)
 
+    def closeEvent(self, event):
+        reply = QMessageBox.question(self, 'Quit', 'Are you sure to quit?',
+                                     QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+        if reply == QMessageBox.Yes:
+            event.accept()
+        else:
+            event.ignore()
