@@ -3,7 +3,7 @@ import matplotlib
 # Make sure that we are using QT5
 from PyQt5 import QtWidgets
 from PyQt5.QtGui import QFont
-from PyQt5.QtWidgets import QLabel, QGridLayout
+from PyQt5.QtWidgets import QLabel, QGridLayout, QVBoxLayout
 matplotlib.use('Qt5Agg')
 
 import numpy as np
@@ -48,39 +48,37 @@ class ByWeekStatisticCanvas(MplCanvas):
             self.axes.set_ylabel('Score')
 
 
-class StatisticWindow(QtWidgets.QMainWindow):
+class StatisticWindow(QVBoxLayout):
     def __init__(self, user):
-        QtWidgets.QMainWindow.__init__(self)
-        self.setWindowTitle("application main window")
-
-        self.main_widget = QtWidgets.QWidget(self)
+        super(StatisticWindow, self).__init__()
+        self.windowTitle = "TYS: statistic"
 
         grid = QGridLayout()
         grid.setSpacing(10)
 
-        sc = ByWeekStatisticCanvas(self.main_widget, width=5, height=4, dpi=100, user=user)
+        sc = ByWeekStatisticCanvas(width=5, height=4, dpi=100, user=user)
 
-        progress_week_label = QLabel('Progress during week:', self.main_widget)
+        progress_week_label = QLabel('Progress during week:')
         progress_week_label.setFont(QFont("Times", 14, QFont.Bold))
 
         week_stat = user.get_current_week_summary_statistic()
-        week_stat_easy_label = QLabel('Easy:', self.main_widget)
-        week_stat_easy_v_label = QLabel('%s' % (week_stat.easy_amount), self.main_widget)
-        week_stat_mid_label = QLabel('Median:', self.main_widget)
-        week_stat_mid_v_label = QLabel('%s' % (week_stat.mid_amount), self.main_widget)
-        week_stat_hard_label = QLabel('Hard:', self.main_widget)
-        week_stat_hard_v_label = QLabel('%s' % (week_stat.hard_amount), self.main_widget)
+        week_stat_easy_label = QLabel('Easy:')
+        week_stat_easy_v_label = QLabel('%s' % (week_stat.easy_amount))
+        week_stat_mid_label = QLabel('Median:')
+        week_stat_mid_v_label = QLabel('%s' % (week_stat.mid_amount))
+        week_stat_hard_label = QLabel('Hard:')
+        week_stat_hard_v_label = QLabel('%s' % (week_stat.hard_amount))
 
-        progress_label = QLabel('Progress during all time:', self.main_widget)
+        progress_label = QLabel('Progress during all time:')
         progress_label.setFont(QFont("Times", 14, QFont.Bold))
 
         stat = user.get_summary_statistic()
-        stat_easy_label = QLabel('Easy:', self.main_widget)
-        stat_easy_v_label = QLabel('%s' % (stat.easy_amount), self.main_widget)
-        stat_mid_label = QLabel('Median:', self.main_widget)
-        stat_mid_v_label = QLabel('%s' % (stat.mid_amount), self.main_widget)
-        stat_hard_label = QLabel('Hard:', self.main_widget)
-        stat_hard_v_label = QLabel('%s' % (stat.hard_amount), self.main_widget)
+        stat_easy_label = QLabel('Easy:')
+        stat_easy_v_label = QLabel('%s' % (stat.easy_amount))
+        stat_mid_label = QLabel('Median:')
+        stat_mid_v_label = QLabel('%s' % (stat.mid_amount))
+        stat_hard_label = QLabel('Hard:')
+        stat_hard_v_label = QLabel('%s' % (stat.hard_amount))
 
         grid.addWidget(sc, 1, 0, 5, 2)
         grid.addWidget(progress_week_label, 6, 0, 1, 2)
@@ -99,7 +97,4 @@ class StatisticWindow(QtWidgets.QMainWindow):
         grid.addWidget(stat_hard_label, 9 + 9, 0)
         grid.addWidget(stat_hard_v_label, 9 + 9, 1)
 
-        self.main_widget.setLayout(grid)
-        self.main_widget.setFocus()
-        self.setCentralWidget(self.main_widget)
-        self.statusBar().showMessage("All hail matplotlib!", 2000)
+        self.addLayout(grid)

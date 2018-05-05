@@ -95,12 +95,12 @@ class User:
             date_list.append(date)
         full_score_list = list()
         full_date_list = list()
-        acc_score = 0
         if len(date_list):
+            acc_score = acc_score_list[0]
             last_date = date_list[0]
             for i in range(len(date_list)):
                 date = date_list[i]
-                while last_date < date:
+                while last_date <= date:
                     full_score_list.append(acc_score)
                     full_date_list.append(last_date)
                     last_date += timedelta(days=7)

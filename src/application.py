@@ -13,5 +13,6 @@ class App:
         self.chat_tasks = dict()
 
     def run(self):
-        self.main_window = MainWindow()
+        self.current_widget = MainWidget.create(self)
+        # self.current_widget = Window(None, self)
         sys.exit(self.__app.exec_())
