@@ -135,7 +135,7 @@ class ChatBox(QSplitter):
                 self.answer_flush(correct, self.answer_box)
                 QApplication.processEvents()
                 time.sleep(0.2)
-            self.answer_box.setPlainText('')
+                self.answer_box.setPlainText('')
 
     @staticmethod
     def answer_flush(correct, obj):
