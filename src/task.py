@@ -13,6 +13,7 @@ class Difficulties:
     MEDIUM = 2
     HARD = 3
 
+
 class ChatTask:
 
     def __init__(self, json_dict, difficulty, id=None):

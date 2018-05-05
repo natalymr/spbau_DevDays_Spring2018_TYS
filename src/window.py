@@ -76,6 +76,6 @@ class Window(QWidget):
                     self.chat_tasks[difficulty].update({i: ChatTask(j, difficulty)})
 
     def run_chat_task(self, difficulty):
-        current_task = random.choice(self.chat_tasks[difficulty].items())
-        del self.chat_tasks[difficulty][current_task.id]
-        result = self.chat_window.run_task(current_task)
+        id, current_task = random.choice(list(self.chat_tasks[difficulty].items()))
+        del self.chat_tasks[difficulty][id]
+        self.chat_window.run_task(current_task)
