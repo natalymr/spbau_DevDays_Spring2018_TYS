@@ -10,9 +10,7 @@ import time
 import sys
 import matplotlib as mpl
 from PyQt5.QtWidgets import QTableWidget
-from PyQt5.QtWidgets import QTextEdit
-from PyQt5.QtWidgets import QWidget
-from matplotlib.backends.backend_agg import FigureCanvasAgg
+from PyQt5.QtWidgets import *
 import json
 
 from src.application import *
@@ -21,7 +19,7 @@ class WindowTask(QSplitter):
 
     def __init__(self, window):
         self.window = window
-        super().__init__(Qt.Vertical)
+        super(WindowTask, self).__init__(Qt.Vertical)
 
         self.setHandleWidth(0)
 
@@ -32,7 +30,7 @@ class WindowTask(QSplitter):
         self.up_text = QLabel(self.up_frame)
 
 
-        f = open("coding_problems.json", "r")
+        f = open("src/tasks/coding_problems.json", "r")
 
         st = f.readline()
         st = f.readline()
@@ -115,21 +113,24 @@ class WindowTask(QSplitter):
             pass
 
     def tick_status(self):
+        if self.window is None:
+            self.clear_back()
+            return
         min = int(self.count/60)
         sec = int(self.count % 60)
         self.val = min + sec/100
         self.snd_frame.setValue(self.count*100/(self.totalMin*60))
         self.snd_frame.setFormat('%.02f' % self.val)
         self.count += 1
-        if self.count == 3:
-            self.window.chat_window.run_task(self.window.chat_tasks[1][1]) # yes no
-        if self.count == 13:
-            self.window.chat_window.run_task(self.window.chat_tasks[1][5])  # test
-        if self.count == 23:
-            self.window.chat_window.run_task(self.window.chat_tasks[1][3]) # single
-        if self.count > 180:
+        if self.count % 10 == 0:
+            self.window.run_chat_task(difficulty=1)
+        if self.count > 300:
             self.timer.stop()
 
+    def close(self):
+        self.timer.stop()
+        self.timer = None
+        super(WindowTask, self).close()
 
     def textToTex(self, text):
         prefTex = "\\documentclass{article}\n\
