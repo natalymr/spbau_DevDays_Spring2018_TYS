@@ -11,10 +11,11 @@ from src.utils import CHAT_TASKS
 
 class Window(QWidget):
 
-    def __init__(self, owner, parent):
+    def __init__(self, owner, parent, difficulty=3):
         super(Window, self).__init__()
         self.owner = owner
         self.parent = parent
+        self.difficulty = difficulty
         self.initUI()
         self.asked_tasks = dict()
         self.chat_tasks = dict()
@@ -32,7 +33,7 @@ class Window(QWidget):
     def set_windows(self):
         hbox = QHBoxLayout(self)
         self.task_window = WindowTask(self)
-        self.chat_window = WindowChat(self, difficulty=3)
+        self.chat_window = WindowChat(self, difficulty=self.difficulty)
         self.code_window = WindowCode(self)
 
         splitter1 = QSplitter(Qt.Vertical)

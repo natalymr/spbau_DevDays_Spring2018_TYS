@@ -1,6 +1,7 @@
 from PyQt5.QtWidgets import *
 from src.window import Window
 from src.account.StatisticWindow import StatisticWindow
+from src.account.SelectDifficultyWidget import SelectDifficultyWidget
 
 
 class ProfileWidget(QWidget):
@@ -45,7 +46,7 @@ class ProfileWidget(QWidget):
 
     def handle_start(self):
         self.hide()
-        self.owner.current_widget = Window(self.owner, self)
+        self.owner.current_widget = SelectDifficultyWidget(self.owner, self)
 
     def handle_statistic(self):
         self.stat = StatisticWindow(self.user)
