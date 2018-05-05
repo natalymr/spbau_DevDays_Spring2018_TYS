@@ -2,12 +2,13 @@ from PyQt5.QtWidgets import *
 from src.window import Window
 from src.account.StatisticWindow import StatisticWindow
 from src.account.SelectDifficultyWidget import SelectDifficultyWidget
+from copy import deepcopy
 
 
 class ProfileWidget(QWidget):
     def __init__(self, login_server, user, owner, parent):
         super(ProfileWidget, self).__init__()
-        self.parent = parent
+        self.parent = None  # parent
         self.owner = owner
         self.user = user
         self.login_server = login_server
@@ -37,9 +38,9 @@ class ProfileWidget(QWidget):
                                      QMessageBox.Yes | QMessageBox.No, QMessageBox.Yes)
         if reply == QMessageBox.Yes:
             self.user.logout_callback(self.login_server)
-            if self.parent is not None:
-                self.parent.show()
-                self.owner.current_widget = self.parent
+            # if self.parent is not None:
+            #     self.parent.show()
+            #     self.owner.current_widget = self.parent
             event.accept()
         else:
             event.ignore()
@@ -51,3 +52,7 @@ class ProfileWidget(QWidget):
     def handle_statistic(self):
         self.stat = StatisticWindow(self.user)
         self.stat.show()
+
+    def handle_finish(self):
+        task_list = deepcopy(self.owner.current_widget.current_answers)
+        self.user.end_interview_callback(task_list)

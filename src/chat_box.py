@@ -52,7 +52,7 @@ class ChatBox(QSplitter):
         answer = len(selected) == len(self.answers) \
                  and sorted(selected) == sorted(self.answers)
         self.answer_flush(answer, self.answer_box)
-        self.parent_window.set_answer(self.current_task.id, answer)
+        self.parent_window.set_answer(self.current_task, answer)
 
     def single_question(self, task):
         self.__set_task(task)
@@ -157,4 +157,4 @@ class ChatBox(QSplitter):
     def __check_bool_answer(self, answer, button):
         answer = len(self.answers) == 1 and self.answers[0] == answer
         self.answer_flush(answer, button)
-        self.parent_window.set_answer(self.current_task.id, answer)
+        self.parent_window.set_answer(self.current_task, answer)

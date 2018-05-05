@@ -19,7 +19,7 @@ class Window(QWidget):
         self.initUI()
         self.asked_tasks = dict()
         self.chat_tasks = dict()
-        self.current_answers = dict()
+        self.current_answers = list()
         self.load_chat_tasks()
         self.show()
 
@@ -61,9 +61,11 @@ class Window(QWidget):
             self.owner.current_widget = self.parent
             self.parent.show()
         if can_close:
-            self.close()
+            print('before close')
+            self.hide()
         else:
             self.hide()
+        print('after close')
 
     def load_chat_tasks(self):
         for difficulty, file in CHAT_TASKS.items():
@@ -81,3 +83,7 @@ class Window(QWidget):
             print(id, current_task)
             del self.chat_tasks[difficulty][id]
             self.chat_window.run_task(current_task)
+
+    def handle_finish(self):
+        self.parent.handle_finish()
+        self.handle_back()

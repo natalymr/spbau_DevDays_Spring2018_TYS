@@ -116,9 +116,7 @@ class WindowTask(QSplitter):
             pass
 
     def tick_status(self):
-        if self.window is None:
-            self.clear_back()
-            return
+        print(self.window.current_answers)
         min = int(self.count/60)
         sec = int(self.count % 60)
         self.val = min + sec/100

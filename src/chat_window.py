@@ -46,8 +46,8 @@ class WindowChat(QSplitter):
         if task.type == TaskType.SINGLE_ANSWER:
             self.chat_box.single_question(task)
 
-    def set_answer(self, task_id, answer):
-        self.parent.current_answers[task_id] = answer
+    def set_answer(self, task, answer):
+        self.parent.current_answers.append(task, answer)
 
     def __create_interviewer_box(self):
         self.info_window = QFrame(self)
@@ -59,7 +59,7 @@ class WindowChat(QSplitter):
 
         hbox = QHBoxLayout(self.info_window)
         button = QPushButton('Back', splitter1)
-        button.clicked.connect(self.parent.handle_back)
+        button.clicked.connect(self.parent.handle_finish)
         button.setFixedSize(100, 40)
 
         label_difficulty = QLabel(splitter1)
