@@ -25,9 +25,9 @@ class MainWidget(QWidget):
 
     def handle_register(self):
         self.hide()
-        self.owner.current_widget = Register(self.owner.login_server, self.owner, None)
+        self.owner.current_widget = Register(self.owner.login_server, self.owner, self)
 
     def handle_login(self):
         self.hide()
-        self.owner.current_widget = LoginWidget(self.owner.login_server, self.owner, None)
+        self.owner.current_widget = LoginWidget(self.owner.login_server, self.owner, self)
 

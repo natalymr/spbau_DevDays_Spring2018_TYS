@@ -105,6 +105,8 @@ class User:
                     full_date_list.append(last_date)
                     last_date += timedelta(days=7)
                 acc_score = acc_score_list[i]
+            full_date_list.insert(0, full_date_list[0] - timedelta(days=7))
+            full_score_list.insert(0, 0)
         return (full_date_list, np.array(full_score_list))
 
     def _get_week_date(self):
