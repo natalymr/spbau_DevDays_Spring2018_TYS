@@ -46,7 +46,9 @@ class LoginWidget(QWidget):
         layout.addLayout(button_layout)
 
         self.setLayout(layout)
-        self.setGeometry(300, 300, 280, 150)
+        self.setGeometry(0, 0,
+                         QDesktopWidget().availableGeometry().width(),
+                         QDesktopWidget().availableGeometry().height())
         self.setWindowTitle('TryYourSkills: Log in')
         self.show()
 
@@ -61,11 +63,3 @@ class LoginWidget(QWidget):
         else:
             self.textPasswd.setText('')
             QMessageBox.warning(self, 'Error', 'Bad user or password')
-
-    def closeEvent(self, event):
-        reply = QMessageBox.question(self, 'Quit', 'Are you sure to quit?',
-                                     QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
-        if reply == QMessageBox.Yes:
-            event.accept()
-        else:
-            event.ignore()

@@ -19,7 +19,7 @@ class Window(QWidget):
         self.initUI()
         self.asked_tasks = dict()
         self.chat_tasks = dict()
-        self.current_answers = dict()
+        self.current_answers = set()
         self.load_chat_tasks()
         self.show()
 
@@ -76,6 +76,8 @@ class Window(QWidget):
                     self.chat_tasks[difficulty].update({i: ChatTask(j, difficulty)})
 
     def run_chat_task(self, difficulty):
-        id, current_task = random.choice(list(self.chat_tasks[difficulty].items()))
-        del self.chat_tasks[difficulty][id]
-        self.chat_window.run_task(current_task)
+        if len(self.chat_tasks[difficulty]):
+            id, current_task = random.choice(list(self.chat_tasks[difficulty].items()))
+            print(id, current_task)
+            del self.chat_tasks[difficulty][id]
+            self.chat_window.run_task(current_task)

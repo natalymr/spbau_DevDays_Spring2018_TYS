@@ -26,7 +26,9 @@ class SelectDifficultyWidget(QWidget):
         layout.addWidget(hard_button)
 
         self.setLayout(layout)
-        self.setGeometry(300, 300, 300, 100)
+        self.setGeometry(0, 0,
+                         QDesktopWidget().availableGeometry().width(),
+                         QDesktopWidget().availableGeometry().height())
         self.setWindowTitle('TryYourSkills')
         self.show()
 
@@ -41,8 +43,8 @@ class SelectDifficultyWidget(QWidget):
 
     def handle_mid(self):
         self.hide()
-        self.owner.current_widget = Window(self.owner, self.parent, difficulty=3)
+        self.owner.current_widget = Window(self.owner, self.parent, difficulty=2)
 
     def handle_hard(self):
         self.hide()
-        self.owner.current_widget = Window(self.owner, self.parent, difficulty=5)
+        self.owner.current_widget = Window(self.owner, self.parent, difficulty=3)

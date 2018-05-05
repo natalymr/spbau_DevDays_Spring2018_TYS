@@ -14,6 +14,8 @@ from PyQt5.QtWidgets import *
 import json
 
 from src.application import *
+from src.task import TaskType
+
 
 class WindowTask(QSplitter):
 
@@ -40,18 +42,19 @@ class WindowTask(QSplitter):
         ste = json.loads(st)
         self.prob_name = ste["problems_name"]
         self.description_tex = ste["legend"]
-        self.texToHtml(self.description_tex, "description")
+        # self.texToHtml(self.description_tex, "description")
+
         self.inTex = ste["input"]
         self.outTex = ste["output"]
         text = "Input:\n\n" + self.inTex + "\n\nOutput:\n\n" + self.outTex
-        self.texToHtml(text, "io")
+        # self.texToHtml(text, "io")
 
         self.examplesTex = ""
         for ioTex in ste["sampleTests"]:
             examplesIn_tex = ioTex["input"].replace("\n", "\\newline")
             examplesOut_tex = ioTex["output"].replace("\n", "\\newline")
             self.examplesTex += "\n\ninput:\n\n" + examplesIn_tex + "\n\noutput:\n\n" + examplesOut_tex
-        self.texToHtml(self.examplesTex, "examples")
+        # self.texToHtml(self.examplesTex, "examples")
 
 
         self.up_text.setText(self.prob_name)

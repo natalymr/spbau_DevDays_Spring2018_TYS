@@ -19,7 +19,9 @@ class MainWidget(QWidget):
         button_layout.addWidget(self.button_login)
 
         self.setLayout(button_layout)
-        self.setGeometry(300, 300, 300, 100)
+        self.setGeometry(0, 0,
+                         QDesktopWidget().availableGeometry().width(),
+                         QDesktopWidget().availableGeometry().height())
         self.setWindowTitle('TryYourSkills: Start')
         self.show()
 
@@ -30,4 +32,3 @@ class MainWidget(QWidget):
     def handle_login(self):
         self.hide()
         self.owner.current_widget = LoginWidget(self.owner.login_server, self.owner, self)
-
