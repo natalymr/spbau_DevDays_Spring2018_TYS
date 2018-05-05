@@ -5,6 +5,7 @@ from PyQt5.QtCore import Qt
 from PyQt5 import QtCore, QtGui
 from PyQt5.QtWidgets import QLabel
 import subprocess
+import random
 import threading
 import time
 import sys
@@ -13,7 +14,6 @@ from PyQt5.QtWidgets import QTableWidget
 from PyQt5.QtWidgets import *
 import json
 
-from src.application import *
 from src.task import TaskType
 
 
@@ -31,23 +31,36 @@ class WindowTask(QSplitter):
         self.up_frame = QFrame(self)
         self.up_text = QLabel(self.up_frame)
 
+        self.num_code = random.randint(1, 16)
+        # self.num_code = 4
+        # print(self.num_code)
 
-        f = open("src/tasks/coding_problems.json", "r")
+        # for i in range(self.num_code):
+        #     st = f.readline()
 
-        st = f.readline()
-        st = f.readline()
-        st = f.readline()
-        st = f.readline()
-        st = st.replace("'", "\"")
-        ste = json.loads(st)
-        self.prob_name = ste["problems_name"]
+        # st = f.readline()
+        # st = f.readline()
+        # st = f.readline()
+        # st = st.replace("'", "\"")
+
+        with open("src/tasks/coding_problems.json", "r") as f:
+            self.st = json.load(f)
+        ste = self.st[self.num_code - 1]
+        self.prob_name = ste["name"]
+        self.prob_name_t = ste["problem_name_t"]
+        # self.prob_name_t = ste["problem_name_t"]
         self.description_tex = ste["legend"]
         # self.texToHtml(self.description_tex, "description")
+
+        # with open("src/tasks/tests_for_all_problems.json", "r") as file_r:
+        #     self.tests = json.load(file_r)
 
         self.inTex = ste["input"]
         self.outTex = ste["output"]
         text = "Input:\n\n" + self.inTex + "\n\nOutput:\n\n" + self.outTex
         # self.texToHtml(text, "io")
+
+        self.sampleTests = ste["sampleTests"]
 
         self.examplesTex = ""
         for ioTex in ste["sampleTests"]:

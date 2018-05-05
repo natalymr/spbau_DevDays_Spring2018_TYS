@@ -1,4 +1,3 @@
-
 import matplotlib
 
 # Make sure that we are using QT5
@@ -11,7 +10,7 @@ import numpy as np
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
 from matplotlib import dates
-
+from PyQt5.QtWidgets import *
 
 class MplCanvas(FigureCanvas):
     def __init__(self, parent=None, width=5, height=4, dpi=100, user=None):

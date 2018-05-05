@@ -9,10 +9,10 @@ import random
 from src.utils import CHAT_TASKS
 
 
-class Window(QWidget):
+class InterviewWindow(QSplitter):
 
-    def __init__(self, owner, parent, difficulty=3):
-        super(Window, self).__init__()
+    def __init__(self, owner, parent, difficulty=1):
+        super(InterviewWindow, self).__init__(Qt.Vertical)
         self.owner = owner
         self.parent = parent
         self.alive = True
@@ -22,19 +22,18 @@ class Window(QWidget):
         self.chat_tasks = dict()
         self.current_answers = list()
         self.load_chat_tasks()
-        self.show()
 
     def initUI(self):
-        self.setWindowTitle('TryYourSkills')
-        self.setGeometry(0, 0,
-                         QDesktopWidget().availableGeometry().width(),
-                         QDesktopWidget().availableGeometry().height())
+        # self.setWindowTitle('TryYourSkills')
+        # self.setGeometry(0, 0,
+        #                  QDesktopWidget().availableGeometry().width(),
+        #                  QDesktopWidget().availableGeometry().height())
         self.set_windows()
 
     def set_windows(self):
-        hbox = QHBoxLayout(self)
+        hbox = QHBoxLayout(self.parent)
         self.task_window = WindowTask(self)
-        self.chat_window = WindowChat(self, difficulty=self.difficulty)
+        self.chat_window = WindowChat(self, self.owner, difficulty=self.difficulty)
         self.code_window = WindowCode(self)
 
         splitter1 = QSplitter(Qt.Vertical)

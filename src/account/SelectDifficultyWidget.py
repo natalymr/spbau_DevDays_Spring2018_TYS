@@ -34,22 +34,17 @@ class SelectDifficultyWidget(QVBoxLayout):
     def show(self):
         self.widget.show()
 
-    def closeEvent(self, event):
-        self.parent.show()
-        self.owner.current_widget = self.parent
-        event.accept()
-
     def handle_easy(self):
         self.hide()
         self.owner.current_widget = Window(self.owner, self.parent, difficulty=1)
 
     def handle_mid(self):
         self.hide()
-        self.owner.current_widget = Window(self.owner, self.parent, difficulty=3)
+        self.owner.current_widget = Window(self.owner, self.parent, difficulty=2)
 
     def handle_hard(self):
         self.hide()
-        self.owner.current_widget = Window(self.owner, self.parent, difficulty=5)
+        self.owner.current_widget = Window(self.owner, self.parent, difficulty=3)
 
     @staticmethod
     def create(owner, parent):

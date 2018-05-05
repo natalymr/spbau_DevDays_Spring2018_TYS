@@ -89,23 +89,17 @@ class SecondWindow(QWidget):
         f.write(textIn)
         f.close()
 
-        # compiler = 'python3'
         if not self.mainWindow.preprocessing == '':
             p = subprocess.Popen(self.mainWindow.preprocessing, shell=True)
             p.wait()
-        # compiler = './a.out'
-        input = "4 4\n0 1 2 5\n1 0 3 4\n2 3 0 7\n5 4 7 0\n"
-        # input = "input.txt"
+        task_w = self.mainWindow.window.task_window
+        input = task_w.sampleTests[0]["input"]
+        expectedRes = task_w.sampleTests[0]["output"]
         fo = open("input.txt", 'w')
         fo.write(input)
         fo.close()
-        # pref = '(cat ' + "input.txt" + ' | ' + str(compiler) + ''
-        # suff = ')>temp.txt'
-        expectedRes = "YES\n2 1 1\n1 3 2\n2 4 4\n1 4 5\n"
         if self.mainWindow.language == "Python":
             expectedRes += '\n'
-        # expectedRes += '\n'
-        # p = subprocess.Popen(pref+file+suff, shell=True)
         p1 = subprocess.Popen(self.mainWindow.cmd_pref + self.mainWindow.cmd_suff, shell=True)
         p1.wait()
         resFile = open("temp.txt", "r")
