@@ -61,4 +61,3 @@ class SelectDifficultyWidget(QVBoxLayout):
         w.setWindowTitle(selectLayout.windowTitle)
         w.show()
         return w
-
