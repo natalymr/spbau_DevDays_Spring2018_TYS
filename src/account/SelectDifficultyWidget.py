@@ -3,11 +3,12 @@ from PyQt5.QtWidgets import *
 from src.window import Window
 
 
-class SelectDifficultyWidget(QWidget):
+class SelectDifficultyWidget(QVBoxLayout):
     def __init__(self, owner, parent):
         super(SelectDifficultyWidget, self).__init__()
         self.parent = parent
         self.owner = owner
+        self.widget = None
 
         label = QLabel('<center> Select your difficulty: <\center>')
         label.setFont(QFont("Times", 14, QFont.Bold))
@@ -25,10 +26,13 @@ class SelectDifficultyWidget(QWidget):
         layout.addWidget(mid_button)
         layout.addWidget(hard_button)
 
-        self.setLayout(layout)
-        self.setGeometry(300, 300, 300, 100)
-        self.setWindowTitle('TryYourSkills')
-        self.show()
+        self.addLayout(layout)
+        self.windowTitle = 'TryYourSkills'
+
+    def hide(self):
+        self.widget.hide()
+    def show(self):
+        self.widget.show()
 
     def closeEvent(self, event):
         self.parent.show()
@@ -46,3 +50,15 @@ class SelectDifficultyWidget(QWidget):
     def handle_hard(self):
         self.hide()
         self.owner.current_widget = Window(self.owner, self.parent, difficulty=5)
+
+    @staticmethod
+    def create(owner, parent):
+        selectLayout = SelectDifficultyWidget(owner, parent)
+        w = QWidget()
+        w.setLayout(selectLayout)
+        selectLayout.widget = w
+        w.setGeometry(300, 300, 300, 100)
+        w.setWindowTitle(selectLayout.windowTitle)
+        w.show()
+        return w
+

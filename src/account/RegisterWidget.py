@@ -59,7 +59,7 @@ class Register(QWidget):
         elif self.login_server.register(login, passwd, name):
             self.login_server.dump()
             user = self.login_server.login(login, passwd)
-            self.owner.current_widget = ProfileWidget(self.login_server, user, self.owner, self.parent)
+            self.owner.current_widget = ProfileWidget.create(self.login_server, user, self.owner)
             self.hide()
         else:
             QMessageBox.warning(self, 'Error', 'Login are already exist')

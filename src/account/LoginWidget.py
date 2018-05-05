@@ -57,7 +57,7 @@ class LoginWidget(QWidget):
     def handle_login(self):
         user = self.login_server.login(self.textLogin.text(), self.textPasswd.text())
         if user is not None:
-            self.owner.current_widget = ProfileWidget(self.login_server, user, self.owner, self.parent)
+            self.owner.current_widget = ProfileWidget.create(self.login_server, user, self.owner)
         else:
             self.textPasswd.setText('')
             QMessageBox.warning(self, 'Error', 'Bad user or password')
