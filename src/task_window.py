@@ -40,7 +40,7 @@ class WindowTask(QSplitter):
         st = f.readline()
         st = st.replace("'", "\"")
         ste = json.loads(st)
-        self.prob_name = ste["problems_name"]
+        self.prob_name = ste["name"]
         self.description_tex = ste["legend"]
         # self.texToHtml(self.description_tex, "description")
 
