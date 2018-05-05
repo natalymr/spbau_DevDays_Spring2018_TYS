@@ -19,7 +19,7 @@ class Window(QWidget):
         self.initUI()
         self.asked_tasks = dict()
         self.chat_tasks = dict()
-        self.current_answers = dict()
+        self.current_answers = set()
         self.load_chat_tasks()
         self.show()
 

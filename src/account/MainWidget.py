@@ -32,11 +32,3 @@ class MainWidget(QWidget):
     def handle_login(self):
         self.hide()
         self.owner.current_widget = LoginWidget(self.owner.login_server, self.owner, self)
-
-    def closeEvent(self, event):
-        reply = QMessageBox.question(self, 'Quit', 'Are you sure to quit?',
-                                     QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
-        if reply == QMessageBox.Yes:
-            event.accept()
-        else:
-            event.ignore()

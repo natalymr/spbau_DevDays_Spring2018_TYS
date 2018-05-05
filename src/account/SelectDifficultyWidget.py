@@ -48,11 +48,3 @@ class SelectDifficultyWidget(QWidget):
     def handle_hard(self):
         self.hide()
         self.owner.current_widget = Window(self.owner, self.parent, difficulty=3)
-
-    def closeEvent(self, event):
-        reply = QMessageBox.question(self, 'Quit', 'Are you sure to quit?',
-                                     QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
-        if reply == QMessageBox.Yes:
-            event.accept()
-        else:
-            event.ignore()

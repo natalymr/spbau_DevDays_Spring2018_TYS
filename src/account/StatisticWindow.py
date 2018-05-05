@@ -103,11 +103,3 @@ class StatisticWindow(QtWidgets.QMainWindow):
         self.main_widget.setFocus()
         self.setCentralWidget(self.main_widget)
         self.statusBar().showMessage("All hail matplotlib!", 2000)
-
-    def closeEvent(self, event):
-        reply = QMessageBox.question(self.main_widget, 'Quit', 'Are you sure to quit?',
-                                     QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
-        if reply == QMessageBox.Yes:
-            event.accept()
-        else:
-            event.ignore()
