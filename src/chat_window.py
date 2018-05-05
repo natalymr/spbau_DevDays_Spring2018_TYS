@@ -53,25 +53,32 @@ class WindowChat(QSplitter):
         self.info_window = QFrame(self)
         self.info_window.setFrameShape(QFrame.StyledPanel)
         self.set_style(self.info_window)
-        self.info_window.setFixedWidth(self.width() * 3 // 5)
-        # self.info_window.setFixedWidth(self.)
-        splitter1 = QSplitter(Qt.Vertical)
+        splitter1 = QSplitter(Qt.Horizontal)
 
         hbox = QHBoxLayout(self.info_window)
-        button = QPushButton('Back', splitter1)
+        self.__holder = QSplitter(Qt.Vertical)
+        self.__logo_temp = QFrame(self)
+        self.__button_holder = QSplitter(Qt.Vertical)
+        button = QPushButton('Back', self.__button_holder)
         button.clicked.connect(self.parent.handle_back)
-        button.setFixedSize(100, 40)
+        self.__holder.addWidget(self.__logo_temp)
+        self.__holder.addWidget(self.__button_holder)
+        self.__holder.setHandleWidth(0)
+        self.__holder.setSizes([300, 10])
 
         label_difficulty = QLabel(splitter1)
         label_difficulty.setText('Difficulty: {}'.format(self.difficulty))
         label_difficulty.setFont(QFont("Times", 12, QFont.Bold))
-        splitter1.addWidget(button)
-        splitter1.addWidget(label_difficulty)
+
         lab = QLabel()
         pixmap = QPixmap(INTERVIEWER.format(self.difficulty))
         lab.setPixmap(pixmap)
+
+        splitter1.addWidget(label_difficulty)
+        splitter1.addWidget(lab)
+
         hbox.addWidget(splitter1)
-        hbox.addWidget(lab)
+        hbox.addWidget(self.__holder)
         self.info_window.setLayout(hbox)
 
     def update_info_window(self):

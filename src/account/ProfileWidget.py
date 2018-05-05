@@ -47,8 +47,7 @@ class ProfileWidget(QWidget):
             event.ignore()
 
     def handle_start(self):
-        # self.hide()
-        self.close()
+        self.hide()
         self.owner.current_widget = SelectDifficultyWidget(self.owner, self)
 
     def handle_statistic(self):
