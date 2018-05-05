@@ -32,22 +32,23 @@ class WindowTask(QSplitter):
         self.up_frame = QFrame(self)
         self.up_text = QLabel(self.up_frame)
 
-
-        f = open("src/tasks/coding_problems.json", "r")
-
-        # self.num_code = random.randint(1, 4)
-        self.num_code = 4
+        self.num_code = random.randint(1, 16)
+        # self.num_code = 4
         # print(self.num_code)
 
         # for i in range(self.num_code):
-        st = f.readline()
+        #     st = f.readline()
 
-        st = f.readline()
-        st = f.readline()
-        st = f.readline()
-        st = st.replace("'", "\"")
-        ste = json.loads(st)
-        self.prob_name = ste["problems_name"]
+        # st = f.readline()
+        # st = f.readline()
+        # st = f.readline()
+        # st = st.replace("'", "\"")
+
+        with open("src/tasks/coding_problems.json", "r") as f:
+            self.st = json.load(f)
+        ste = self.st[self.num_code]
+        self.prob_name = ste["name"]
+        self.prob_name_t = ste["problem_name_t"]
         # self.prob_name_t = ste["problem_name_t"]
         self.description_tex = ste["legend"]
         self.texToHtml(self.description_tex, "description")
