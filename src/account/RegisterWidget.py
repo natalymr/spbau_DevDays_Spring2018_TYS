@@ -1,3 +1,4 @@
+from src.account.ProfileLayout import ProfileLayout
 from PyQt5.QtWidgets import *
 
 

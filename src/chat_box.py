@@ -52,7 +52,7 @@ class ChatBox(QSplitter):
         answer = len(selected) == len(self.answers) \
                  and sorted(selected) == sorted(self.answers)
         self.answer_flush(answer, self.answer_box)
-        self.parent_window.set_answer(self.current_task, answer)
+        self.accept_result(answer)
 
     def single_question(self, task):
         self.__set_task(task)
@@ -62,7 +62,7 @@ class ChatBox(QSplitter):
         window = QTextEdit()
         window.setFontPointSize(12)
         window.setTabStopWidth(24)
-        self.parent_window.set_style(window)
+        set_style(window)
         window.setReadOnly(read_only)
         return window
 
@@ -76,7 +76,7 @@ class ChatBox(QSplitter):
             self.answer_box.setParent(None)
         self.answer_box = QFrame(self)
         self.answer_box.setFrameShape(QFrame.StyledPanel)
-        self.parent_window.set_style(self.answer_box)
+        set_style(self.answer_box)
         self.answer_box.setStyleSheet(Design.DEFAULT_STYLE)
         self.insertWidget(2, self.answer_box)
 
@@ -135,7 +135,7 @@ class ChatBox(QSplitter):
                 self.answer_flush(correct, self.answer_box)
                 QApplication.processEvents()
                 time.sleep(0.2)
-                self.answer_box.setPlainText('')
+            self.answer_box.setPlainText('')
 
     @staticmethod
     def answer_flush(correct, obj):
@@ -151,10 +151,18 @@ class ChatBox(QSplitter):
 
     def __set_task(self, task):
         self.current_task = task
+        self.attempts = 0
         self.question_box.setPlainText(self.current_task.legend)
         self.answers = task.right_answers
 
     def __check_bool_answer(self, answer, button):
         answer = len(self.answers) == 1 and self.answers[0] == answer
         self.answer_flush(answer, button)
-        self.parent_window.set_answer(self.current_task, answer)
+        self.accept_result(answer)
+
+    def accept_result(self, answer):
+        if not answer or (answer and self.attempt != 0):
+            self.parent_window.main_window.accept_result(self.current_task, answer)
+        self.attempts += 1
+        if self.attempts == 3:
+            self.parent_window.parent_window.run_chat_task()

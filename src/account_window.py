@@ -58,16 +58,16 @@ class AccountLayout(QVBoxLayout):
 
     def set_login(self):
         self.__pre_set()
-        self.current_layout = LoginWidget(self.main_window.login_server, self.main_window, self)
+        self.current_layout = LoginWidget(self.main_window, self)
         self.__post_set()
 
     def set_profile(self, user):
         self.__pre_set()
         self.__pre_login(user)
-        self.current_layout = ProfileLayout(self.main_window.login_server, user, self.main_window, self)
+        self.current_layout = ProfileLayout(user, self.main_window, self)
         self.__post_set()
 
     def set_difficulty(self):
         self.__pre_set()
-        self.current_layout = SelectDifficultyWidget(self.main_window)
+        self.current_layout = SelectDifficultyWidget(self.main_window, self)
         self.__post_set()

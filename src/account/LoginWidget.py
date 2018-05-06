@@ -6,16 +6,14 @@ from PyQt5.QtWidgets import *
 
 
 class LoginWidget(QVBoxLayout):
-    def __init__(self, login_server, main_window, account_layout):
+    def __init__(self, main_window, account_layout):
         super(LoginWidget, self).__init__()
         self.main_window = main_window
         self.account_layout = account_layout
-        self.login_server = login_server
+        self.login_server = main_window.login_server
 
         login_label = QLabel('login:')
         passwd_label = QLabel('password:')
-
-        self.login_server = login_server
 
         self.textLogin = QLineEdit()
         self.textPasswd = QLineEdit()
@@ -58,11 +56,4 @@ class LoginWidget(QVBoxLayout):
             self.textPasswd.setText('')
             QMessageBox.warning(self.main_window, 'Error', 'Bad user or password')
 
-    # def closeEvent(self, event):
-    #     reply = QMessageBox.question(self, 'Quit', 'Are you sure to quit?',
-    #                                  QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
-    #     if reply == QMessageBox.Yes:
-    #         event.accept()
-    #     else:
-    #         event.ignore()
 

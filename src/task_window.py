@@ -1,7 +1,16 @@
+from PyQt5.QtGui import QPixmap
+from PyQt5.QtGui import QTextDocument
+from PyQt5.QtWidgets import QFrame, QSplitter, QProgressBar, QToolBox, QLabel, QTableWidgetItem
 from PyQt5.QtCore import Qt
 from PyQt5 import QtCore, QtGui
+from PyQt5.QtWidgets import QLabel
 import subprocess
 import random
+import threading
+import time
+import sys
+import matplotlib as mpl
+from PyQt5.QtWidgets import QTableWidget
 from PyQt5.QtWidgets import *
 import json
 
@@ -115,10 +124,6 @@ class WindowTask(QSplitter):
         self.timer.start(1000)
 
 
-    def update_task(self, task):
-        if task.type == TaskType.SINGLE_ANSWER:
-            pass
-
     def tick_status(self):
         min = int(self.count/60)
         sec = int(self.count % 60)
@@ -126,8 +131,8 @@ class WindowTask(QSplitter):
         self.snd_frame.setValue(self.count*100/(self.totalMin*60))
         self.snd_frame.setFormat('%.02f' % self.val)
         self.count += 1
-        if self.count % 10 == 0:
-            self.window.run_chat_task(difficulty=1)
+        if self.count % 5 == 0:
+            self.window.run_chat_task()
         if self.count > 300:
             self.timer.stop()
 

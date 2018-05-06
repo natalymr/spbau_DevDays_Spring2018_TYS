@@ -1,4 +1,4 @@
-
+from PyQt5.QtWidgets import QFrame
 
 class Design:
     RIGHT_COLOR = 'rgb(77, 255, 77)'
@@ -17,3 +17,18 @@ CHAT_TASKS = {1: 'src/tasks/chat_tasks_1.json'} #,
 DEFAULT_TEXT = 'Hello, my little friend. Let\'s check your skills!'
 
 INTERVIEWER = 'src/images/interviewer_{}.png'
+
+
+class Account:
+    START_PAGE = 0
+    ACCOUNT = 1
+    SIGN_UP = 2
+    LOG_IN = 3
+    DIFF = 4
+
+
+def set_style(window):
+    window.setFrameShape(QFrame.StyledPanel)
+    window.setLineWidth(2)
+    window.setFrameShape(QFrame.Box)
+    window.setFrameShadow(QFrame.Plain)
