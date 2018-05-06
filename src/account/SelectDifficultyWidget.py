@@ -6,7 +6,6 @@ class SelectDifficultyWidget(QVBoxLayout):
     def __init__(self, main_window):
         super(SelectDifficultyWidget, self).__init__()
         self.main_window = main_window
-        self.widget = None
 
         label = QLabel('<center> Select your difficulty: <\center>')
         label.setFont(QFont("Times", 14, QFont.Bold))

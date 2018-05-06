@@ -10,10 +10,10 @@ from src.utils import CHAT_TASKS
 from copy import deepcopy
 
 
-class InterviewWindow(QSplitter):
+class InterviewWindow(QVBoxLayout):
 
     def __init__(self, main_window, user, difficulty=1):
-        super(InterviewWindow, self).__init__(Qt.Vertical)
+        super(InterviewWindow, self).__init__()
         self.main_window = main_window
         self.user = user
         self.alive = True
@@ -40,15 +40,15 @@ class InterviewWindow(QSplitter):
         splitter1 = QSplitter(Qt.Vertical)
         splitter1.addWidget(self.task_window)
         splitter1.addWidget(self.code_window)
-        splitter1.setSizes([self.width() // 3,
-                            self.width() * 2 // 3])
+        splitter1.setSizes([self.main_window.width() // 3,
+                            self.main_window.width() * 2 // 3])
         splitter2 = QSplitter(Qt.Horizontal)
         splitter2.addWidget(splitter1)
         splitter2.addWidget(self.chat_window)
-        splitter2.setSizes([self.height() * 3 // 4,
-                            self.height() // 4])
+        splitter2.setSizes([self.main_window.height() * 3 // 4,
+                            self.main_window.height() // 4])
         hbox.addWidget(splitter2)
-        self.setLayout(hbox)
+        self.addLayout(hbox)
 
     def handle_back(self):
         self.task_window.close()
@@ -73,6 +73,6 @@ class InterviewWindow(QSplitter):
             self.chat_window.run_task(current_task)
 
     def handle_finish(self):
-        task_list = deepcopy(self.main_window.current_widget.current_answers)
+        task_list = deepcopy(self.current_answers)
         self.user.end_interview_callback(task_list)
         self.handle_back()

@@ -9,8 +9,8 @@ from src.utils import *
 
 class WindowChat(QSplitter):
 
-    def __init__(self, window, owner, difficulty):
-        self.owner = owner
+    def __init__(self, window, main_window, difficulty):
+        self.main_window = main_window
         self.difficulty = difficulty
         self.parent_w = window
         super(WindowChat, self).__init__(Qt.Vertical)
@@ -20,7 +20,7 @@ class WindowChat(QSplitter):
         self.addWidget(self.chat_box)
         self.setSizes([self.width() * 3 // 10,
                        self.width() * 7 // 10])
-        self.setFixedWidth(self.owner.width() * 1 // 4)
+        self.setFixedWidth(self.main_window.width() * 1 // 4)
 
     @staticmethod
     def set_style(window):
@@ -48,7 +48,7 @@ class WindowChat(QSplitter):
             self.chat_box.single_question(task)
 
     def set_answer(self, task, answer):
-        self.owner.current_answers.append((task, answer))
+        self.parent_w.current_answers.append((task, answer))
 
     def __create_interviewer_box(self):
         self.info_window = QFrame(self)
@@ -61,7 +61,7 @@ class WindowChat(QSplitter):
         self.__logo_temp = QFrame(self)
         self.__button_holder = QSplitter(Qt.Vertical)
         button = QPushButton('Back', self.__button_holder)
-        # button.clicked.connect(self.parent.handle_back)
+        button.clicked.connect(self.parent_w.handle_finish)
         self.__holder.addWidget(self.__logo_temp)
         self.__holder.addWidget(self.__button_holder)
         self.__holder.setHandleWidth(0)

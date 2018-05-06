@@ -1,4 +1,3 @@
-from src.account.ProfileLayout import ProfileLayout
 from PyQt5.QtWidgets import *
 
 
@@ -60,12 +59,4 @@ class Register(QVBoxLayout):
             self.account_layout.set_profile(user)
         else:
             QMessageBox.warning(self.main_window, 'Error', 'Login are already exist')
-
-    # def closeEvent(self, event):
-    #     reply = QMessageBox.question(self, 'Quit', 'Are you sure to quit?',
-    #                                  QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
-    #     if reply == QMessageBox.Yes:
-    #         event.accept()
-    #     else:
-    #         event.ignore()
 

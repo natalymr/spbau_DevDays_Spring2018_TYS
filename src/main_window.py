@@ -13,16 +13,12 @@ class MainWindow(QWidget):
         i = 0
         if layout is not None:
             while i < layout.count():
-                item = layout.takeAt(i)
-                print(item)
-                if item is None:
-                    i += 1
+                item = layout.takeAt(0)
+                widget = item.widget()
+                if widget is not None:
+                    widget.deleteLater()
                 else:
-                    widget = item.widget()
-                    if widget is not None:
-                        widget.deleteLater()
-                    else:
-                        MainWindow.clear_layout(item.layout())
+                    MainWindow.clear_layout(item.layout())
 
     def __init__(self):
         super(MainWindow, self).__init__()
@@ -72,3 +68,13 @@ class MainWindow(QWidget):
             self.setLayout(self.current_layout)
         else:
             self.layout().addLayout(self.current_layout)
+
+    def closeEvent(self, event):
+        reply = QMessageBox.question(self, 'Quit', 'Are you sure to quit?',
+                                     QMessageBox.Yes | QMessageBox.No, QMessageBox.Yes)
+        if reply == QMessageBox.Yes:
+            if self.current_user is not None:
+                self.current_user.logout_callback(self.login_server)
+            event.accept()
+        else:
+            event.ignore()
