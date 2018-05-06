@@ -6,8 +6,7 @@ from src.chat_window import WindowChat
 from src.task import ChatTask
 import json
 import random
-from src.utils import CHAT_TASKS
-from src.utils import glob_dict_name
+from src.utils import *
 from copy import deepcopy
 
 
@@ -21,9 +20,6 @@ class InterviewWindow(QVBoxLayout):
         self.difficulty = difficulty
         self.windowTitle = 'TryYourSkills: Interview'
         self.set_windows()
-        self.asked_tasks = dict()
-        self.chat_tasks = dict()
-        self.current_answers = list()
         self.load_chat_tasks()
 
     def set_windows(self):
@@ -53,20 +49,23 @@ class InterviewWindow(QVBoxLayout):
         self.main_window.set_account_window()
 
     def load_chat_tasks(self):
-        for difficulty, file in CHAT_TASKS.items():
-            with open(file) as json_file:
-                self.asked_tasks[difficulty] = dict()
-                self.chat_tasks[difficulty] = dict()
-                jsons = json.load(json_file)
-                for j in jsons:
-                    i = j['id']
-                    self.chat_tasks[difficulty].update({i: ChatTask(j, difficulty)})
+        with open(CHAT_TASKS) as json_file:
+            self.chat_tasks = dict()
+            self.current_answers = list()
+            jsons = json.load(json_file)
+            for j in jsons:
+                i = j['id']
+                difficulty = j['difficulty']
+                self.chat_tasks.update({i: ChatTask(j, difficulty)})
 
-    def run_chat_task(self):
-        if len(self.chat_tasks[self.difficulty]):
-            id, current_task = random.choice(list(self.chat_tasks[self.difficulty].items()))
-            del self.chat_tasks[self.difficulty][id]
-            self.chat_window.run_task(current_task)
+    def run_chat_task(self, count=3, start=False, cont=False):
+        if len(self.chat_tasks):
+            tasks = list()
+            for i in range(count):
+                id, task = random.choice(list(self.chat_tasks.items()))
+                del self.chat_tasks[id]
+                tasks.append(task)
+            self.chat_window.run_tasks(tasks, start, cont)
 
     def handle_finish(self):
         task_list = self.main_window.answers()
@@ -74,21 +73,3 @@ class InterviewWindow(QVBoxLayout):
         self.user.end_interview_callback(task_list)
         self.handle_back()
         self.main_window.set_account_window()
-
-
-
-    def match_asymp_html_file_name(list_of_asymp, path_to_html="sources/html/vars/"):
-        """
-        Сопоставляет каждой асимптотике ее html-имя, возвращает путь до этих html-файлов.
-        :param list_of_asymp: список асимптотик
-        :param path_to_html: дефолт
-        :return: список путей до соответствующих html
-        """
-
-        global glob_dict_name
-
-        result = []
-        for each in list_of_asymp:
-            result.append(path_to_html + glob_dict_name[each])
-
-        return result

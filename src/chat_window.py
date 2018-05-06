@@ -21,13 +21,8 @@ class WindowChat(QSplitter):
                        self.width() * 7 // 10])
         self.setFixedWidth(self.main_window.width() * 1 // 4)
 
-    def run_task(self, task):
-        if task.type == TaskType.TEST:
-            self.chat_box.test_question(task)
-        if task.type == TaskType.YES_NO:
-            self.chat_box.yes_no_question(task)
-        if task.type == TaskType.SINGLE_ANSWER:
-            self.chat_box.single_question(task)
+    def run_tasks(self, tasks, start, cont):
+        self.chat_box.run_tasks(tasks, start, cont)
 
     def accept_result(self, task, answer):
         self.main_window.accept_result((task, answer))

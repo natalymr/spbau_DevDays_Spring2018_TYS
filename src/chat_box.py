@@ -4,6 +4,7 @@ from PyQt5.QtGui import *
 from src.utils import *
 from src.task import *
 import time
+import json
 
 
 class ChatBox(QSplitter):
@@ -29,18 +30,23 @@ class ChatBox(QSplitter):
         self.answer_botton.resize(self.answer_botton.sizeHint())
         self.answer_botton.move(self.width() // 10,
                                 self.height() // 10)
+        # self.asymptotics = glob_asym_html
+        self.load_asymptotics()
 
-    def yes_no_question(self, task):
-        self.__set_task(task)
-        self.__answer_box_yes_no()
-
-    def test_question(self, task):
-        self.__set_task(task)
-        self.__answer_box_test()
+    def load_asymptotics(self):
+        with open(DICT_WITH_ASYMPTOTICS) as f:
+            j = json.load(f)
+            self.asymptotics = j
 
     def __make_checkbox(self, proposed_answers):
         self.checkbox_list = []
         for i in range(len(proposed_answers)):
+            # v = proposed_answers[i]
+            # tmp = QTextEdit()
+            # tmp.setHtml(self.asymptotics[v])
+            # text = tmp.toPlainText()
+            # self.checkbox_list.append(QCheckBox(text, self.answer_box))
+            # self.checkbox_list.append(QCheckBox(self.asymptotics[proposed_answers[i]], self.answer_box))
             self.checkbox_list.append(QCheckBox(proposed_answers[i], self.answer_box))
             self.answer_box.v_test_box.addWidget(self.checkbox_list[i], i)
 
@@ -52,10 +58,6 @@ class ChatBox(QSplitter):
         answer = len(selected) == len(self.answers) \
                  and sorted(selected) == sorted(self.answers)
         self.answer_flush(answer, self.answer_box)
-
-    def single_question(self, task):
-        self.__set_task(task)
-        self.__answer_box_single()
 
     def __create_text_editor(self, read_only):
         window = QTextEdit()
@@ -160,9 +162,29 @@ class ChatBox(QSplitter):
         self.answer_flush(answer, button)
 
     def accept_result(self, answer):
-        print(answer, self.attempts, self.current_task)
         if not answer or (answer and self.attempts != 0):
             self.parent_window.main_window.accept_result(self.current_task, answer)
         self.attempts += 1
         if self.attempts == 3:
             self.parent_window.parent_window.run_chat_task()
+
+    def run_tasks(self, tasks, start, cont):
+        self.tasks = tasks
+        while tasks:
+            self.__run(tasks[0])
+            del tasks[0]
+        if start:
+            pass
+            # self.parent_window.parent_window.run_code_window()
+        elif cont:
+            pass
+            # self.parent_window.parent_window.continue_code_window()
+
+    def __run(self, task):
+        self.__set_task(task)
+        if task.type == TaskType.TEST:
+            self.__answer_box_test()
+        if task.type == TaskType.YES_NO:
+            self.__answer_box_yes_no()
+        if task.type == TaskType.SINGLE_ANSWER:
+            self.__answer_box_single()

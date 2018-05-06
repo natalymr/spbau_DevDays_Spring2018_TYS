@@ -11,9 +11,8 @@ class Design:
     WRONG_STYLE = 'background-color: {};color: rgb(0,0,0)'.format(WRONG_COLOR)
 
 
-CHAT_TASKS = {1: 'src/tasks/chat_tasks_1.json',
-              2: 'src/tasks/chat_tasks_2.json',
-              3: 'src/tasks/chat_tasks_3.json'}
+CHAT_TASKS = 'src/tasks/json/chat_problems/chat_tasks.json'
+DICT_WITH_ASYMPTOTICS = 'src/tasks/html/asym/asym_dict.json'
 
 DEFAULT_TEXT = 'Hello, my little friend. Let\'s check your skills!'
 
