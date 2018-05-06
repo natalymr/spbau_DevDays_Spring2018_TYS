@@ -52,7 +52,6 @@ class ChatBox(QSplitter):
         answer = len(selected) == len(self.answers) \
                  and sorted(selected) == sorted(self.answers)
         self.answer_flush(answer, self.answer_box)
-        self.accept_result(answer)
 
     def single_question(self, task):
         self.__set_task(task)
@@ -138,8 +137,8 @@ class ChatBox(QSplitter):
                 time.sleep(0.2)
             answer_box.setPlainText('')
 
-    @staticmethod
-    def answer_flush(correct, obj):
+    def answer_flush(self, correct, obj):
+        self.accept_result(correct)
         time.sleep(0.5)
         flush = Design.WRONG_STYLE
         if correct:
@@ -159,7 +158,6 @@ class ChatBox(QSplitter):
     def __check_bool_answer(self, answer, button):
         answer = len(self.answers) == 1 and self.answers[0] == answer
         self.answer_flush(answer, button)
-        self.accept_result(answer)
 
     def accept_result(self, answer):
         print(answer, self.attempts, self.current_task)

@@ -68,12 +68,8 @@ class InterviewWindow(QVBoxLayout):
             self.chat_window.run_task(current_task)
 
     def handle_finish(self):
-        self.end_interview()
-        self.main_window.set_account_window()
-
-    def end_interview(self):
         task_list = self.main_window.answers()
-        print(task_list)
+        print('RESULTS: ', task_list)
         self.user.end_interview_callback(task_list)
         self.handle_back()
         self.main_window.set_account_window()

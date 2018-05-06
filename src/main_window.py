@@ -1,4 +1,5 @@
 from PyQt5.QtWidgets import *
+from PyQt5.QtGui import *
 from src.window import InterviewWindow
 from src.account_window import AccountLayout
 from src.account.LoginServer import LoginServer
@@ -37,6 +38,7 @@ class MainWindow(QWidget):
         self.show()
 
     def accept_result(self, task, result):
+        print('DEBUG: ', task, result)
         self.current_results.append((task, result))
 
     def set_interview_window(self, difficulty):
@@ -77,7 +79,6 @@ class MainWindow(QWidget):
         if reply == QMessageBox.Yes:
             if self.current_user is not None:
                 self.current_user.logout_callback(self.login_server)
-            print('EXIT: ', self.current_results)
             event.accept()
         else:
             event.ignore()
