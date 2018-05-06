@@ -7,14 +7,15 @@ from src.task import ChatTask
 import json
 import random
 from src.utils import CHAT_TASKS
+from copy import deepcopy
 
 
 class InterviewWindow(QSplitter):
 
-    def __init__(self, owner, parent, difficulty=1):
+    def __init__(self, main_window, user, difficulty=1):
         super(InterviewWindow, self).__init__(Qt.Vertical)
-        self.owner = owner
-        self.parent = parent
+        self.main_window = main_window
+        self.user = user
         self.alive = True
         self.difficulty = difficulty
         self.initUI()
@@ -31,9 +32,9 @@ class InterviewWindow(QSplitter):
         self.set_windows()
 
     def set_windows(self):
-        hbox = QHBoxLayout(self.parent)
+        hbox = QHBoxLayout()
         self.task_window = WindowTask(self)
-        self.chat_window = WindowChat(self, self.owner, difficulty=self.difficulty)
+        self.chat_window = WindowChat(self, self.main_window, difficulty=self.difficulty)
         self.code_window = WindowCode(self)
 
         splitter1 = QSplitter(Qt.Vertical)
@@ -49,23 +50,11 @@ class InterviewWindow(QSplitter):
         hbox.addWidget(splitter2)
         self.setLayout(hbox)
 
-    def closeEvent(self, event):
-        self.handle_back(can_close=False)
-        event.accept()
-
-    def handle_back(self, can_close=True):
-        if self.alive:
-            self.alive = False
-            self.task_window.close()
-            self.chat_window.close()
-            self.code_window.close()
-            if self.owner != None:
-                self.owner.current_widget = self.parent
-                self.parent.show()
-            if can_close:
-                self.close()
-            else:
-                self.hide()
+    def handle_back(self):
+        self.task_window.close()
+        self.chat_window.close()
+        self.code_window.close()
+        self.main_window.set_account_window()
 
     def load_chat_tasks(self):
         for difficulty, file in CHAT_TASKS.items():
@@ -84,5 +73,6 @@ class InterviewWindow(QSplitter):
             self.chat_window.run_task(current_task)
 
     def handle_finish(self):
-        self.parent.handle_finish()
+        task_list = deepcopy(self.main_window.current_widget.current_answers)
+        self.user.end_interview_callback(task_list)
         self.handle_back()

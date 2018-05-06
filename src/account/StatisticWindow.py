@@ -49,7 +49,7 @@ class ByWeekStatisticCanvas(MplCanvas):
 
 
 class StatisticWindow(QVBoxLayout):
-    def __init__(self, user):
+    def __init__(self, user, main_window):
         super(StatisticWindow, self).__init__()
         self.windowTitle = "TYS: statistic"
 
@@ -97,4 +97,9 @@ class StatisticWindow(QVBoxLayout):
         grid.addWidget(stat_hard_label, 9 + 9, 0)
         grid.addWidget(stat_hard_v_label, 9 + 9, 1)
 
+        back_button = QPushButton('Back')
+        back_button.clicked.connect(main_window.set_account_window)
+        grid.addWidget(back_button, 11 + 9, 0)
+
         self.addLayout(grid)
+

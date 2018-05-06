@@ -1,13 +1,11 @@
 from PyQt5.QtGui import QFont
 from PyQt5.QtWidgets import *
-from src.window import InterviewWindow
 
 
 class SelectDifficultyWidget(QVBoxLayout):
-    def __init__(self, main_window, account_layout):
+    def __init__(self, main_window):
         super(SelectDifficultyWidget, self).__init__()
-        self.parent = account_layout
-        self.owner = main_window
+        self.main_window = main_window
         self.widget = None
 
         label = QLabel('<center> Select your difficulty: <\center>')
@@ -30,14 +28,11 @@ class SelectDifficultyWidget(QVBoxLayout):
         self.windowTitle = 'TryYourSkills: Select your difficulty'
 
     def handle_easy(self):
-        self.hide()
-        self.owner.current_widget = InterviewWindow(self.owner, self.parent, difficulty=1)
+        self.main_window.set_interview_window(difficulty=1)
 
     def handle_mid(self):
-        self.hide()
-        self.owner.current_widget = InterviewWindow(self.owner, self.parent, difficulty=2)
+        self.main_window.set_interview_window(difficulty=2)
 
     def handle_hard(self):
-        self.hide()
-        self.owner.current_widget = InterviewWindow(self.owner, self.parent, difficulty=3)
+        self.main_window.set_interview_window(difficulty=3)
 

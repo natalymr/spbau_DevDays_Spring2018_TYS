@@ -66,13 +66,3 @@ class LoginWidget(QVBoxLayout):
     #     else:
     #         event.ignore()
 
-    @staticmethod
-    def create(login_server, owner, parent):
-        login_layout = LoginWidget(login_server, owner, parent)
-        w = QWidget()
-        w.setLayout(login_layout)
-        login_layout.widget = w
-        w.setGeometry(300, 300, 280, 150)
-        w.setWindowTitle(login_layout.windowTitle)
-        w.show()
-        return w

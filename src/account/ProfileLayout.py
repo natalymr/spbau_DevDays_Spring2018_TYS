@@ -1,7 +1,6 @@
 from PyQt5.QtWidgets import *
 from src.account.StatisticWindow import StatisticWindow
 from src.account.SelectDifficultyWidget import SelectDifficultyWidget
-from copy import deepcopy
 
 
 class ProfileLayout(QVBoxLayout):
@@ -34,8 +33,4 @@ class ProfileLayout(QVBoxLayout):
 
     def handle_statistic(self):
         self.main_window.set_statistics_window()
-
-    def handle_finish(self):
-        task_list = deepcopy(self.main_window.current_widget.current_answers)
-        self.user.end_interview_callback(task_list)
 

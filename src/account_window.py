@@ -5,6 +5,7 @@ from src.account.MainLayout import MainLayout
 from src.account.RegisterWidget import Register
 from src.account.LoginWidget import LoginWidget
 from src.account.ProfileLayout import ProfileLayout
+from src.account.SelectDifficultyWidget import SelectDifficultyWidget
 
 
 class AccountLayout(QVBoxLayout):
@@ -68,4 +69,5 @@ class AccountLayout(QVBoxLayout):
 
     def set_difficulty(self):
         self.__pre_set()
-        self.current_layout = SelectDifficultyWidget(self.main_window, self)
+        self.current_layout = SelectDifficultyWidget(self.main_window)
+        self.__post_set()
