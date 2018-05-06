@@ -33,6 +33,7 @@ class User:
 
     def end_interview_callback(self, task_array):
         for task, result in task_array:
+            self.flatten_task_proposed.add(task.id)
             best_score = self.best_task_solved.get(task.id)
             if best_score is None or best_score < result * task.difficulty:
                 self.best_task_solved[task.id] = result * task.difficulty
@@ -41,18 +42,22 @@ class User:
 
     def _dump_curr_session(self):
         week_date = self._get_week_date()
-        best_task_on_week = dict()  # id -> (task, result)
-        for task, result in self.curr_session_task_solved:
-            self.flatten_task_proposed.add(task.id)
-            best_pair = best_task_on_week.get(task.id)
-            if best_pair is not None:
-                best_task, best_result = best_pair
-                if result * task.difficulty <= best_result * best_task.difficulty:
-                    continue
-            best_task_on_week[task.id] = (task, result)
+        best_task_on_week = self._accumulate_best_task(dict(), self.curr_session_task_solved)
+        best_task_on_week = self._accumulate_best_task(best_task_on_week, self.per_week_task_solved[week_date])
         best_task_list = list(best_task_on_week.values())
         if 0 < len(best_task_list):
             self.per_week_task_solved[week_date] = best_task_list
+
+    @staticmethod
+    def _accumulate_best_task(init_dict, task_list):
+        for task, result in task_list:
+            best_pair = init_dict.get(task.id)
+            if best_pair is not None:
+                best_task, best_result = best_pair
+                if result * task.difficulty < best_result * best_task.difficulty:
+                    continue
+            init_dict[task.id] = (task, result)
+        return init_dict
 
     def get_current_week_summary_statistic(self):
         week_date = self._get_week_date()
