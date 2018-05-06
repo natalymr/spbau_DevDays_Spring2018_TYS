@@ -73,3 +73,9 @@ class InterviewWindow(QVBoxLayout):
         self.user.end_interview_callback(task_list)
         self.handle_back()
         self.main_window.set_account_window()
+
+    def run_code_window(self):
+        self.task_window.run_code_task()
+
+    def continue_code_window(self):
+        self.task_window.continue_code_task()
