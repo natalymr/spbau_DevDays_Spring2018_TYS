@@ -18,5 +18,4 @@
 	{"algo_name": "удаление из АВЛ-девера", "asymptotics": "log(n)", "wrong_asymptotics": ["n", "n^2", "nlog(n)"]},
 	{"algo_name": "поиск минимума в АВЛ-дереве", "asymptotics": "log(n)", "wrong_asymptotics": ["n", "nlog(n)", "n^2"]},
 	{"algo_name": "поиск в хэш-таблице", "asymptotics": "1", "wrong_asymptotics": ["n", "nlog(n)", "n^2"]}
-
 ]

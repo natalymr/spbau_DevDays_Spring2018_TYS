@@ -43,7 +43,7 @@ class WindowChat(QSplitter):
         self.__logo_temp = QFrame(self)
         self.__button_holder = QSplitter(Qt.Vertical)
         button = QPushButton('Back', self.__button_holder)
-        button.clicked.connect(self.parent_window.handle_back)
+        button.clicked.connect(self.parent_window.handle_finish)
         self.__holder.addWidget(self.__logo_temp)
         self.__holder.addWidget(self.__button_holder)
         self.__holder.setHandleWidth(0)

@@ -1,5 +1,6 @@
 from PyQt5.QtWidgets import QFrame
 
+
 class Design:
     RIGHT_COLOR = 'rgb(77, 255, 77)'
     WRONG_COLOR = 'rgb(255, 26, 26)'
@@ -10,21 +11,13 @@ class Design:
     WRONG_STYLE = 'background-color: {};color: rgb(0,0,0)'.format(WRONG_COLOR)
 
 
-CHAT_TASKS = {1: 'src/tasks/chat_tasks_1.json'} #,
-              # 2: 'src/tasks/chat_tasks_2.json',
-              # 3: 'src/tasks/chat_tasks_3.json'}
+CHAT_TASKS = {1: 'src/tasks/chat_tasks_1.json',
+              2: 'src/tasks/chat_tasks_2.json',
+              3: 'src/tasks/chat_tasks_3.json'}
 
 DEFAULT_TEXT = 'Hello, my little friend. Let\'s check your skills!'
 
 INTERVIEWER = 'src/images/interviewer_{}.png'
-
-
-class Account:
-    START_PAGE = 0
-    ACCOUNT = 1
-    SIGN_UP = 2
-    LOG_IN = 3
-    DIFF = 4
 
 
 def set_style(window):

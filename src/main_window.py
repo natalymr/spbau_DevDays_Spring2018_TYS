@@ -41,7 +41,7 @@ class MainWindow(QWidget):
 
     def set_interview_window(self, difficulty):
         self.__set_layout(InterviewWindow(self, self.current_user,
-                                              difficulty=difficulty))
+                                          difficulty=difficulty))
 
     def set_statistics_window(self):
         self.__set_layout(StatisticWindow(self.current_user, self))
@@ -73,7 +73,7 @@ class MainWindow(QWidget):
 
     def closeEvent(self, event):
         reply = QMessageBox.question(self, 'Quit', 'Are you sure to quit?',
-                                     QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+                                     QMessageBox.Yes | QMessageBox.No, QMessageBox.Yes)
         if reply == QMessageBox.Yes:
             if self.current_user is not None:
                 self.current_user.logout_callback(self.login_server)

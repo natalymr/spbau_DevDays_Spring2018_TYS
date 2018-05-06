@@ -72,6 +72,8 @@ class InterviewWindow(QVBoxLayout):
         self.main_window.set_account_window()
 
     def end_interview(self):
-        task_list = deepcopy(self.main_window.answers())
+        task_list = self.main_window.answers()
+        print(task_list)
         self.user.end_interview_callback(task_list)
+        self.handle_back()
         self.main_window.set_account_window()

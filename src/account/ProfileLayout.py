@@ -38,5 +38,6 @@ class ProfileLayout(QVBoxLayout):
         self.main_window.set_statistics_window()
 
     def handle_logout(self):
+        self.main_window.current_user.logout_callback(self.main_window.login_server)
         self.main_window.current_user = None
         self.main_window.set_account_window()

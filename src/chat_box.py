@@ -125,17 +125,18 @@ class ChatBox(QSplitter):
             self.__check_ckeckbox()
             return
         elif self.current_task.type == TaskType.SINGLE_ANSWER:
-            answer = self.answer_box.toPlainText()
+            answer_box = self.answer_box
+            answer = answer_box.toPlainText()
             right_answers = self.current_task.right_answers
             self.answer_box.setPlainText(answer)
             if answer:
                 correct = False
                 if answer.lower().replace(' ', '') in right_answers:
                     correct = True
-                self.answer_flush(correct, self.answer_box)
+                self.answer_flush(correct, answer_box)
                 QApplication.processEvents()
                 time.sleep(0.2)
-            self.answer_box.setPlainText('')
+            answer_box.setPlainText('')
 
     @staticmethod
     def answer_flush(correct, obj):
@@ -161,7 +162,8 @@ class ChatBox(QSplitter):
         self.accept_result(answer)
 
     def accept_result(self, answer):
-        if not answer or (answer and self.attempt != 0):
+        print(answer, self.attempts, self.current_task)
+        if not answer or (answer and self.attempts != 0):
             self.parent_window.main_window.accept_result(self.current_task, answer)
         self.attempts += 1
         if self.attempts == 3:

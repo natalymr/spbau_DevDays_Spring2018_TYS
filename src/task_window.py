@@ -131,7 +131,7 @@ class WindowTask(QSplitter):
         self.snd_frame.setValue(self.count*100/(self.totalMin*60))
         self.snd_frame.setFormat('%.02f' % self.val)
         self.count += 1
-        if self.count % 5 == 0:
+        if self.count % 10 == 0:
             self.window.run_chat_task()
         if self.count > 300:
             self.timer.stop()
