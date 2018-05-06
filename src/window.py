@@ -7,6 +7,7 @@ from src.task import ChatTask
 import json
 import random
 from src.utils import CHAT_TASKS
+from src.utils import glob_dict_name
 from copy import deepcopy
 
 
@@ -73,3 +74,21 @@ class InterviewWindow(QVBoxLayout):
         self.user.end_interview_callback(task_list)
         self.handle_back()
         self.main_window.set_account_window()
+
+
+
+    def match_asymp_html_file_name(list_of_asymp, path_to_html="sources/html/vars/"):
+        """
+        Сопоставляет каждой асимптотике ее html-имя, возвращает путь до этих html-файлов.
+        :param list_of_asymp: список асимптотик
+        :param path_to_html: дефолт
+        :return: список путей до соответствующих html
+        """
+
+        global glob_dict_name
+
+        result = []
+        for each in list_of_asymp:
+            result.append(path_to_html + glob_dict_name[each])
+
+        return result
