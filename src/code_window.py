@@ -9,7 +9,7 @@ import json
 
 from PyQt5.QtWidgets import QLabel
 
-from spbau_DevDays_Spring2018_TYS.src.code_task import CodeTask
+from src.task import CodeTask
 
 
 class WindowCode(QSplitter):

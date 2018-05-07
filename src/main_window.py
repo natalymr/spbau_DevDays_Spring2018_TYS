@@ -24,8 +24,10 @@ class MainWindow(QWidget):
         self.current_user = None
         self.current_layout = None
         self.login_server = LoginServer('LoginServer.pickle')
+
         self.setWindowTitle('TryYourSkills')
         self.current_results = list()
+
         self.setGeometry(0, 0,
                          QDesktopWidget().availableGeometry().width(),
                          QDesktopWidget().availableGeometry().height())

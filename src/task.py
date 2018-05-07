@@ -26,3 +26,10 @@ class ChatTask:
             self.legend = json_dict.get('legend', '')
         else:
             self.id = id
+
+
+class CodeTask:
+
+    def __init__(self, id, difficulty):
+        self.difficulty = difficulty
+        self.id = id

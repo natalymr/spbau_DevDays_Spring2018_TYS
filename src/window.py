@@ -69,7 +69,6 @@ class InterviewWindow(QVBoxLayout):
 
     def handle_finish(self):
         task_list = self.main_window.answers()
-        print('RESULTS: ', task_list)
         self.user.end_interview_callback(task_list)
         self.handle_back()
         self.main_window.set_account_window()

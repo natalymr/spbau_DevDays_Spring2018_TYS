@@ -99,12 +99,6 @@ class LoginServer:
                 task_array.append((task, result))
             user.end_interview_callback(task_array)
             user.logout_callback(login_server)
-        curr_stat = user.get_current_week_summary_statistic()
-        print('curr: ', curr_stat.easy_amount, curr_stat.mid_amount, curr_stat.hard_amount)
-
-        full_stat = user.get_summary_statistic()
-        print('full: ', full_stat.easy_amount, full_stat.mid_amount, full_stat.hard_amount)
-
         date, data = user.get_statistic()
         t = date
         t = np.append(t, t[-1])
