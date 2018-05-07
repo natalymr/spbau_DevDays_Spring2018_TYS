@@ -1,5 +1,6 @@
 from src.account.ProfileLayout import ProfileLayout
 from PyQt5.QtWidgets import *
+from PyQt5.QtCore import Qt
 
 
 class Register(QVBoxLayout):
@@ -31,8 +32,11 @@ class Register(QVBoxLayout):
         form_layout.addLayout(input_layout)
 
         self.buttonBack = QPushButton('Back')
+        self.buttonBack.setFixedSize(225, 25)
         self.buttonBack.clicked.connect(self.handle_back)
         self.buttonLogin = QPushButton('Sign up')
+        self.buttonLogin.setShortcut(Qt.Key_Space)
+        self.buttonLogin.setFixedSize(225, 25)
         self.buttonLogin.clicked.connect(self.handle_register)
         button_layout = QHBoxLayout()
         button_layout.addWidget(self.buttonBack)

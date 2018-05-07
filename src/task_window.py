@@ -1,20 +1,9 @@
-from PyQt5.QtGui import QPixmap
-from PyQt5.QtGui import QTextDocument
-from PyQt5.QtWidgets import QFrame, QSplitter, QProgressBar, QToolBox, QLabel, QTableWidgetItem
 from PyQt5.QtCore import Qt
 from PyQt5 import QtCore, QtGui
-from PyQt5.QtWidgets import QLabel
 import subprocess
 import random
-import threading
-import time
-import sys
-import matplotlib as mpl
-from PyQt5.QtWidgets import QTableWidget
 from PyQt5.QtWidgets import *
 import json
-
-from src.task import TaskType
 
 
 class WindowTask(QSplitter):
@@ -31,9 +20,6 @@ class WindowTask(QSplitter):
         self.up_frame = QFrame(self)
         self.up_text = QLabel(self.up_frame)
 
-        # self.num_code = random.randint(1, 16) #9,10,13,15-bad
-        # while self.num_code == 9 or self.num_code == 10 or self.num_code == 13 or self.num_code == 15 or self.num_code == 11:
-        #     self.num_code = random.randint(1, 16)
 
         with open("src/tasks/json/coding_problems/problems/coding_problems.json", "r") as f:
             self.st = json.load(f)
@@ -56,8 +42,8 @@ class WindowTask(QSplitter):
             num = random.randint(0, len(self.dif_dict[self.task_dif]) - 1)
             self.ste = self.dif_dict[num]
 
-        # self.ste = self.st[self.num_code - 1]
         self.prob_name = self.ste["name"]
+        self.id = self.ste["id"]
         self.up_text.setText(self.prob_name)
         self.prob_name_t = self.ste["problem_name_t"]
         self.inTex = self.ste["input"]
@@ -106,11 +92,8 @@ class WindowTask(QSplitter):
         self.scale = 1000
         self.timer = QtCore.QTimer()
         self.timer.timeout.connect(self.tick_status)
-        # self.timer.start(1000)
-        # self.run_code_task()
 
     def run_code_task(self):
-        # self.up_text.setText(self.prob_name)
         txt = ""
         desc = ("src/tasks/html/code/"+self.prob_name_t+"/description.html").replace('"', '')
         io = ("src/tasks/html/code/"+self.prob_name_t+"/io.html").replace('"','')

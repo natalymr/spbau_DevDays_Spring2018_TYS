@@ -116,9 +116,5 @@ class LoginServer:
         plt.plot(t, s, t, np.zeros_like(s), color='g', alpha=.74)
         plt.autoscale(enable=True, axis='x', tight=True)
         plt.show()
-        # login_server.clean()
 
-# LoginServer.test()
-
-# LoginServer.fill_test_statistic()
 

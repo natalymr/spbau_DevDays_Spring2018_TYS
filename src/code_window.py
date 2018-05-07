@@ -9,6 +9,8 @@ import json
 
 from PyQt5.QtWidgets import QLabel
 
+from spbau_DevDays_Spring2018_TYS.src.code_task import CodeTask
+
 
 class WindowCode(QSplitter):
 
@@ -23,8 +25,6 @@ class WindowCode(QSplitter):
         self.fst_frame.setTabStopWidth(36)
         self.fst_frame.clear()
 
-        # snd_frame = QFrame(self)
-        # snd_frame.setFrameShape(QFrame.StyledPanel)
         self.snd_frame = QSplitter(Qt.Horizontal)
         self.left = QSplitter(Qt.Horizontal)
         self.right = QSplitter(Qt.Horizontal)
@@ -34,20 +34,16 @@ class WindowCode(QSplitter):
         self.snd_frame.setHandleWidth(0)
 
 
-        #preprocessing, cmd, filename
-        self.compilers = {"C++11": ['g++ test.cpp -std=c++11', './a.out', 'test.cpp'], "Python": ['', 'python3 test.py', 'test.py'],
-                          "Java8": ['', '', ''], "Haskell": ['', '', '']}
+        self.compilers = {"C++11": ['g++ test.cpp -std=c++11', './a.out', 'test.cpp'], "Python": ['', 'python3 test.py', 'test.py']}
 
 
         self.combo = QComboBox(self.right)
-        self.languages = ["C++11", "Python"]#,
-                        #"Java8", "Haskell"]
+        self.languages = ["C++11", "Python"]
         self.combo.addItems(self.languages)
 
         self.language = "C++11"
         self.preprocessing = self.compilers[self.language][0]
         self.cmd_pref = 'cat input.txt  | ' + self.compilers[self.language][1]
-        # pref = '(cat input.txt  | ' + str(compiler) + ''
         self.cmd_suff = ' 1>temp.txt 2>err.txt'
         self.file =self.compilers[self.language][2]
 
@@ -84,7 +80,7 @@ class SecondWindow(QWidget):
         self.resize(200, 200)
         self.mainWindow = mainWindow
 
-        file = self.mainWindow.file#'test.cpp'#py
+        file = self.mainWindow.file
         f = open(file, 'w')
         f.write(textIn)
         f.close()
@@ -134,5 +130,7 @@ class SecondWindow(QWidget):
         self.text.setText(result)
         if result=="OK":
             self.mainWindow.window.run_chat_task(count=5, cont=False)
+            task = CodeTask(task_w.id, task_w.task_dif)
+            self.mainWindow.window.main_window.accept_result(task, True)
             self.mainWindow.window.handle_finish()
         self.text.move(80, 80)

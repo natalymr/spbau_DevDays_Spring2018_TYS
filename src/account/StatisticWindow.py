@@ -3,6 +3,7 @@ import matplotlib
 # Make sure that we are using QT5
 from PyQt5 import QtWidgets
 from PyQt5.QtGui import QFont
+from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QLabel, QGridLayout, QVBoxLayout
 matplotlib.use('Qt5Agg')
 
@@ -51,55 +52,51 @@ class ByWeekStatisticCanvas(MplCanvas):
 class StatisticWindow(QVBoxLayout):
     def __init__(self, user, main_window):
         super(StatisticWindow, self).__init__()
-        self.windowTitle = "TYS: statistic"
+        self.windowTitle = "Try Your Skills: Statistic"
 
         grid = QGridLayout()
         grid.setSpacing(10)
 
         sc = ByWeekStatisticCanvas(width=5, height=4, dpi=100, user=user)
 
-        progress_week_label = QLabel('Progress during week:')
+        progress_week_label = QLabel('<center> Progress during week: <\center>')
         progress_week_label.setFont(QFont("Times", 14, QFont.Bold))
-
         week_stat = user.get_current_week_summary_statistic()
-        week_stat_easy_label = QLabel('Easy:')
-        week_stat_easy_v_label = QLabel('%s' % (week_stat.easy_amount))
-        week_stat_mid_label = QLabel('Median:')
-        week_stat_mid_v_label = QLabel('%s' % (week_stat.mid_amount))
-        week_stat_hard_label = QLabel('Hard:')
-        week_stat_hard_v_label = QLabel('%s' % (week_stat.hard_amount))
+        week_stat_easy_label = QLabel('<center> Easy:\t\t%s<\center>' % (week_stat.easy_amount))
+        font = week_stat_easy_label.font()
+        font.setPointSizeF(12)
+        week_stat_easy_label.setFont(font)
+        week_stat_mid_label = QLabel('<center> Median:\t\t%s<\center>' % (week_stat.mid_amount))
+        week_stat_mid_label.setFont(font)
+        week_stat_hard_label = QLabel('<center> Hard:\t\t%s<\center>' % (week_stat.hard_amount))
+        week_stat_hard_label.setFont(font)
 
-        progress_label = QLabel('Progress during all time:')
+        progress_label = QLabel('<center> Progress during all time: <\center>')
         progress_label.setFont(QFont("Times", 14, QFont.Bold))
-
         stat = user.get_summary_statistic()
-        stat_easy_label = QLabel('Easy:')
-        stat_easy_v_label = QLabel('%s' % (stat.easy_amount))
-        stat_mid_label = QLabel('Median:')
-        stat_mid_v_label = QLabel('%s' % (stat.mid_amount))
-        stat_hard_label = QLabel('Hard:')
-        stat_hard_v_label = QLabel('%s' % (stat.hard_amount))
+        stat_easy_label = QLabel('<center> Easy: %s<\center>' % (stat.easy_amount))
+        stat_easy_label.setFont(font)
+        stat_mid_label = QLabel('<center> Median: %s<\center>' % (stat.mid_amount))
+        stat_mid_label.setFont(font)
+        stat_hard_label = QLabel('<center> Hard: %s<\center>' % (stat.hard_amount))
+        stat_hard_label.setFont(font)
 
-        grid.addWidget(sc, 1, 0, 5, 2)
-        grid.addWidget(progress_week_label, 6, 0, 1, 2)
-        grid.addWidget(week_stat_easy_label, 7, 0, 1, 1)
-        grid.addWidget(week_stat_easy_v_label, 7, 1)
-        grid.addWidget(week_stat_mid_label, 8, 0)
-        grid.addWidget(week_stat_mid_v_label, 8, 1)
-        grid.addWidget(week_stat_hard_label, 9, 0)
-        grid.addWidget(week_stat_hard_v_label, 9, 1)
 
-        grid.addWidget(progress_label, 6 + 9, 0, 1, 2)
-        grid.addWidget(stat_easy_label, 7 + 9, 0, 1, 1)
-        grid.addWidget(stat_easy_v_label, 7 + 9, 1)
-        grid.addWidget(stat_mid_label, 8 + 9, 0)
-        grid.addWidget(stat_mid_v_label, 8 + 9, 1)
-        grid.addWidget(stat_hard_label, 9 + 9, 0)
-        grid.addWidget(stat_hard_v_label, 9 + 9, 1)
+        self.addWidget(sc)
+        self.addWidget(progress_week_label)
+        self.addWidget(week_stat_easy_label)
+        self.addWidget(week_stat_mid_label)
+        self.addWidget(week_stat_hard_label)
+        self.addWidget(progress_label)
+        self.addWidget(stat_easy_label)
+        self.addWidget(stat_mid_label)
+        self.addWidget(stat_hard_label)
+        self.setAlignment(Qt.AlignCenter)
 
         back_button = QPushButton('Back')
+        back_button.setShortcut('Esc')
+        back_button.setFixedSize(225, 25)
         back_button.clicked.connect(main_window.set_account_window)
-        grid.addWidget(back_button, 11 + 9, 0)
-
-        self.addLayout(grid)
-
+        back_button.move(100, 100)
+        back_button.setShortcut('Esc')
+        self.addWidget(back_button)

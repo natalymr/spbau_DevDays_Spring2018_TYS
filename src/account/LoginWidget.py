@@ -3,7 +3,7 @@
 
 from src.account.ProfileLayout import ProfileLayout
 from PyQt5.QtWidgets import *
-
+from PyQt5.QtGui import QKeySequence, QKeyEvent
 
 class LoginWidget(QVBoxLayout):
     def __init__(self, main_window, account_layout):
@@ -31,8 +31,11 @@ class LoginWidget(QVBoxLayout):
         form_layout.addLayout(input_layout)
 
         self.buttonBack = QPushButton('Back')
+        self.buttonBack.setFixedSize(225, 25)
         self.buttonBack.clicked.connect(self.handle_back)
         self.buttonLogin = QPushButton('Log in')
+        self.buttonLogin.setShortcut(QKeySequence.InsertLineSeparator)
+        self.buttonLogin.setFixedSize(225, 25)
         self.buttonLogin.clicked.connect(self.handle_login)
         button_layout = QHBoxLayout()
         button_layout.addWidget(self.buttonBack)
@@ -55,5 +58,3 @@ class LoginWidget(QVBoxLayout):
         else:
             self.textPasswd.setText('')
             QMessageBox.warning(self.main_window, 'Error', 'Bad user or password')
-
-
