@@ -12,3 +12,9 @@ This repo contains the solution of Try Your Skills for Developer Days.
  В основной папке запустить
 
   ```python3 main.py```
+
+# Неоходимо наличие:
+
++ Python3
++ Компилятор g++
++ Библиотеки: PyQt5, pickle, hashlib, matplotlib, numpy, copy, time, datetime, random, subprocess, sys, os, json
