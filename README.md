@@ -6,3 +6,9 @@ This repo contains the solution of Try Your Skills for Developer Days.
 + Валерия Горячева
 + Дмитрий Гостевский
 + Даниил Никулин
+
+# Запуск приложения:
+
+ В основной папке запустить
+
+  ```python3 main.py```
