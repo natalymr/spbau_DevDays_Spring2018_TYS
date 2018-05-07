@@ -3,7 +3,7 @@ import os
 from PyQt5.QtWidgets import QComboBox
 from PyQt5.QtWidgets import QFrame, QSplitter, QTextEdit, QPushButton, QWidget
 from PyQt5.QtCore import Qt
-from PyQt5 import QtGui
+import random
 import subprocess
 import json
 
@@ -93,21 +93,30 @@ class SecondWindow(QWidget):
             p = subprocess.Popen(self.mainWindow.preprocessing, shell=True)
             p.wait()
         task_w = self.mainWindow.window.task_window
-        input = task_w.sampleTests[0]["input"]
-        expectedRes = task_w.sampleTests[0]["output"]
-        fo = open("input.txt", 'w')
-        fo.write(input)
-        fo.close()
+        with open("src/tasks/json/coding_problems/tests/tests_for_all_problems.json", "r") as f:
+            self.st = json.load(f)
+        tests = []
+        for test in self.st:
+            if test["problem_name_t"] == task_w.prob_name_t:
+                tests = test["tests"]
+        input = ""
+        expectedRes = ""
+        num_test = random.randint(0,len(tests))
+        for im in tests[num_test]["input"]:
+            input += im
+        for om in tests[num_test]["output"]:
+            expectedRes += om
+        with open("input.txt", 'w') as fo:
+            fo.write(input)
         if self.mainWindow.language == "Python":
             expectedRes += '\n'
         p1 = subprocess.Popen(self.mainWindow.cmd_pref + self.mainWindow.cmd_suff, shell=True)
         p1.wait()
-        resFile = open("temp.txt", "r")
-        resLst = resFile.readlines()
+        with open("temp.txt", "r") as resFile:
+            resLst = resFile.readlines()
         res = ''
         for st in resLst:
             res += st
-        resFile.close()
         result = ''
         os.remove(file)
         os.remove("temp.txt")
@@ -123,4 +132,7 @@ class SecondWindow(QWidget):
             result += 'Wrong'
         self.text = QLabel(self)
         self.text.setText(result)
+        if result=="OK":
+            self.mainWindow.window.run_chat_task(count=5, cont=False)
+            self.mainWindow.window.handle_finish()
         self.text.move(80, 80)

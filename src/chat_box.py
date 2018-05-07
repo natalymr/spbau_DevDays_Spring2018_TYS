@@ -23,7 +23,7 @@ class ChatBox(QSplitter):
         self.insertWidget(0, self.dialog_box)
         self.insertWidget(1, self.question_box)
         self.insertWidget(2, self.answer_box)
-        self.setSizes([self.width() // 3,
+        self.setSizes([self.width() // 4,
                        self.width() * 2 // 4,
                        self.width() // 4])
         self.answer_botton = QPushButton('Answer', self)
@@ -160,7 +160,6 @@ class ChatBox(QSplitter):
         self.__run_task()
 
     def __run_task(self):
-        print('DEBUG: ', self.ix)
         if self.ix >= len(self.tasks):
             self.question_box.setParent(None)
             self.question_box = self.__create_text_editor(True)

@@ -38,7 +38,7 @@ class WindowChat(QSplitter):
         self.__logo_temp = QFrame(self)
         self.__button_holder = QSplitter(Qt.Vertical)
         button = QPushButton('Back', self.__button_holder)
-        button.clicked.connect(self.parent_window.handle_finish)
+        button.clicked.connect(self.handle_back)
         self.__holder.addWidget(self.__logo_temp)
         self.__holder.addWidget(self.__button_holder)
         self.__holder.setHandleWidth(0)
@@ -58,3 +58,10 @@ class WindowChat(QSplitter):
         hbox.addWidget(splitter1)
         hbox.addWidget(self.__holder)
         self.info_window.setLayout(hbox)
+
+    def handle_back(self):
+        reply = QMessageBox.question(self, 'Finish',
+                                     'Are you sure to finish current interview?',
+                                     QMessageBox.Yes | QMessageBox.No, QMessageBox.Yes)
+        if reply == QMessageBox.Yes:
+            self.parent_window.handle_finish()

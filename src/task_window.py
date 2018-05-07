@@ -31,16 +31,38 @@ class WindowTask(QSplitter):
         self.up_frame = QFrame(self)
         self.up_text = QLabel(self.up_frame)
 
-        self.num_code = random.randint(1, 16) #9,10,13,15-bad
-        while self.num_code == 9 or self.num_code == 10 or self.num_code == 13 or self.num_code == 15 or self.num_code == 11:
-            self.num_code = random.randint(1, 16)
+        # self.num_code = random.randint(1, 16) #9,10,13,15-bad
+        # while self.num_code == 9 or self.num_code == 10 or self.num_code == 13 or self.num_code == 15 or self.num_code == 11:
+        #     self.num_code = random.randint(1, 16)
 
-        with open("src/tasks/coding_problems.json", "r") as f:
+        with open("src/tasks/json/coding_problems/problems/coding_problems.json", "r") as f:
             self.st = json.load(f)
-        self.ste = self.st[self.num_code - 1]
+
+        self.task_dif = self.window.difficulty + 1
+        if self.task_dif == 4:
+            self.task_dif += 1
+
+        self.dif_dict = {}
+        self.dif_dict[2] = []
+        self.dif_dict[3] = []
+        self.dif_dict[5] = []
+
+        for task in self.st:
+            self.dif_dict[task["difficulty"]].append(task)
+
+        num = random.randint(0, len(self.dif_dict[self.task_dif])-1)
+        self.ste = self.dif_dict[self.task_dif][num]
+        while self.ste["id"] >= 9 and not self.ste["id"] == 14:
+            num = random.randint(0, len(self.dif_dict[self.task_dif]) - 1)
+            self.ste = self.dif_dict[num]
+
+        # self.ste = self.st[self.num_code - 1]
         self.prob_name = self.ste["name"]
+        self.up_text.setText(self.prob_name)
         self.prob_name_t = self.ste["problem_name_t"]
-        self.prob_name = self.prob_name_t.replace('"', "'")
+        self.inTex = self.ste["input"]
+        self.outTex = self.ste["output"]
+        self.sampleTests = self.ste["sampleTests"]
         self.bot_frame = QToolBox()
 
         self.desc = QTextEdit()
@@ -62,10 +84,15 @@ class WindowTask(QSplitter):
 
         self.snd_frame = QProgressBar(self)
         self.snd_frame.setValue(0)
-        palette = QtGui.QPalette(self.palette())
-        palette.setColor(QtGui.QPalette.Highlight,
+        self.palette_green = QtGui.QPalette(self.palette())
+        self.palette_green.setColor(QtGui.QPalette.Highlight,
                          QtGui.QColor(QtCore.Qt.green))
-        self.snd_frame.setPalette(palette)
+
+        self.palette_gray = QtGui.QPalette(self.palette())
+        self.palette_gray.setColor(QtGui.QPalette.Highlight,
+                                    QtGui.QColor(QtCore.Qt.darkGray))
+
+        self.snd_frame.setPalette(self.palette_green)
         self.val = 0.00
         self.snd_frame.setFormat('0.00')
         self.totalMin = 45
@@ -83,7 +110,7 @@ class WindowTask(QSplitter):
         # self.run_code_task()
 
     def run_code_task(self):
-        self.up_text.setText(self.prob_name)
+        # self.up_text.setText(self.prob_name)
         txt = ""
         desc = ("src/tasks/html/code/"+self.prob_name_t+"/description.html").replace('"', '')
         io = ("src/tasks/html/code/"+self.prob_name_t+"/io.html").replace('"','')
@@ -103,11 +130,10 @@ class WindowTask(QSplitter):
         except IOError:
             self.description_tex = self.ste["legend"]
 
-            self.inTex = self.ste["input"]
-            self.outTex = self.ste["output"]
+
             self.io_text = "Input:\n\n" + self.inTex + "\n\nOutput:\n\n" + self.outTex
 
-            self.sampleTests = self.ste["sampleTests"]
+
 
             self.examplesTex = ""
             for ioTex in self.ste["sampleTests"]:
@@ -145,29 +171,23 @@ class WindowTask(QSplitter):
         self.snd_frame.setValue(self.count*100/(self.totalMin*60))
         self.snd_frame.setFormat('%.02f' % self.val)
         self.count += 1
-        if self.count == 9 or self.count == 1800 or self.count == 2700:
+        if self.count == 900 or self.count == 1800 or self.count == 2700:
             self.timer.stop()
-            palette = QtGui.QPalette(self.palette())
-            palette.setColor(QtGui.QPalette.Highlight,
-                             QtGui.QColor(QtCore.Qt.darkGray))
-            self.snd_frame.setPalette(palette)
+            self.snd_frame.setPalette(self.palette_gray)
             co = 1
             if not self.count == 2700 and self.window.difficulty>1:
                 co += 1
             if self.count == 2700:
                 co += self.window.difficulty
             self.window.run_chat_task(count=co, cont=not self.count == 2700)
+            if self.count == 2700:
+                self.window.handle_finish()
 
-        # if self.count % 10 == 0:
-        #     self.window.run_chat_task()
         if self.count > 60*self.totalMin:
             self.timer.stop()
 
     def continue_code_task(self):
-        palette = QtGui.QPalette(self.palette())
-        palette.setColor(QtGui.QPalette.Highlight,
-                         QtGui.QColor(QtCore.Qt.green))
-        self.snd_frame.setPalette(palette)
+        self.snd_frame.setPalette(self.palette_green)
         self.timer.start(1000)
 
     def close(self):
