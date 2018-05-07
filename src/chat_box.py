@@ -128,7 +128,7 @@ class ChatBox(QSplitter):
             answer_box.setPlainText('')
 
     def answer_flush(self, correct, obj):
-        change_task = self.accept_result(correct)
+        self.accept_result(correct)
         time.sleep(0.5)
         flush = Design.WRONG_STYLE
         if correct:
@@ -138,12 +138,10 @@ class ChatBox(QSplitter):
         time.sleep(0.4)
         obj.setStyleSheet(Design.DEFAULT_STYLE)
         time.sleep(0.2)
-        if change_task:
-            self.__run_task()
+        self.__run_task()
 
     def __set_task(self, task):
         self.current_task = task
-        self.attempts = 0
         self.question_box.setPlainText(self.current_task.legend)
         self.answers = task.right_answers
 
@@ -152,12 +150,7 @@ class ChatBox(QSplitter):
         self.answer_flush(answer, button)
 
     def accept_result(self, answer):
-        if answer or self.attempts == 2:
-            return True
-        if not answer or (answer and self.attempts != 0):
-            self.parent_window.main_window.accept_result(self.current_task, answer)
-        self.attempts += 1
-        return False
+        self.parent_window.main_window.accept_result(self.current_task, answer)
 
     def run_tasks(self, tasks, start, cont):
         self.tasks = tasks
@@ -169,7 +162,10 @@ class ChatBox(QSplitter):
     def __run_task(self):
         print('DEBUG: ', self.ix)
         if self.ix >= len(self.tasks):
-            self.pure_view()
+            self.question_box.setParent(None)
+            self.question_box = self.__create_text_editor(True)
+            self.insertWidget(1, self.question_box)
+            self.__answer_box_clear()
             if self.start:
                 self.parent_window.parent_window.run_code_window()
             elif self.cont:

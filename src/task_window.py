@@ -145,7 +145,7 @@ class WindowTask(QSplitter):
         self.snd_frame.setValue(self.count*100/(self.totalMin*60))
         self.snd_frame.setFormat('%.02f' % self.val)
         self.count += 1
-        if self.count == 900 or self.count == 1800 or self.count == 2700:
+        if self.count == 9 or self.count == 1800 or self.count == 2700:
             self.timer.stop()
             palette = QtGui.QPalette(self.palette())
             palette.setColor(QtGui.QPalette.Highlight,
