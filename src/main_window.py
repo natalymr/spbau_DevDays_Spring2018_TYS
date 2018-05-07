@@ -1,10 +1,8 @@
 from PyQt5.QtWidgets import *
-from PyQt5.QtGui import *
 from src.window import InterviewWindow
 from src.account_window import AccountLayout
 from src.account.LoginServer import LoginServer
 from src.account.StatisticWindow import StatisticWindow
-from src.utils import *
 
 
 class MainWindow(QWidget):
@@ -26,19 +24,16 @@ class MainWindow(QWidget):
         self.current_user = None
         self.current_layout = None
         self.login_server = LoginServer('LoginServer.pickle')
-
         self.setWindowTitle('TryYourSkills')
         self.current_results = list()
-
         self.setGeometry(0, 0,
-                         QDesktopWidget().availableGeometry().width() // 2,
-                         QDesktopWidget().availableGeometry().height() // 2)
+                         QDesktopWidget().availableGeometry().width(),
+                         QDesktopWidget().availableGeometry().height())
 
         self.set_account_window()
         self.show()
 
     def accept_result(self, task, result):
-        print('DEBUG: ', task, result)
         self.current_results.append((task, result))
 
     def set_interview_window(self, difficulty):

@@ -80,7 +80,6 @@ class WindowTask(QSplitter):
         self.timer = QtCore.QTimer()
         self.timer.timeout.connect(self.tick_status)
         # self.timer.start(1000)
-        self.window.run_chat_task(count=1+self.window.difficulty, start=True)
         # self.run_code_task()
 
     def run_code_task(self):

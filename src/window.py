@@ -7,7 +7,6 @@ from src.task import ChatTask
 import json
 import random
 from src.utils import *
-from copy import deepcopy
 
 
 class InterviewWindow(QVBoxLayout):
@@ -21,6 +20,7 @@ class InterviewWindow(QVBoxLayout):
         self.windowTitle = 'TryYourSkills: Interview'
         self.set_windows()
         self.load_chat_tasks()
+        self.run_chat_task(count=1+self.difficulty, start=True)
 
     def set_windows(self):
         hbox = QHBoxLayout()

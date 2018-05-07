@@ -4,7 +4,6 @@ from PyQt5.QtGui import *
 from src.utils import *
 from src.task import *
 import time
-import json
 
 
 class ChatBox(QSplitter):
@@ -12,6 +11,9 @@ class ChatBox(QSplitter):
     def __init__(self, parent):
         self.parent_window = parent
         super().__init__(Qt.Vertical)
+        self.pure_view()
+
+    def pure_view(self):
         self.answer_box = None
         self.dialog_box = self.__create_text_editor(True)
         self.dialog_box.setFixedHeight(100)
@@ -24,29 +26,15 @@ class ChatBox(QSplitter):
         self.setSizes([self.width() // 3,
                        self.width() * 2 // 4,
                        self.width() // 4])
-
         self.answer_botton = QPushButton('Answer', self)
         self.answer_botton.clicked.connect(self.answer_click)
         self.answer_botton.resize(self.answer_botton.sizeHint())
         self.answer_botton.move(self.width() // 10,
                                 self.height() // 10)
-        # self.asymptotics = glob_asym_html
-        self.load_asymptotics()
-
-    def load_asymptotics(self):
-        with open(DICT_WITH_ASYMPTOTICS) as f:
-            j = json.load(f)
-            self.asymptotics = j
 
     def __make_checkbox(self, proposed_answers):
         self.checkbox_list = []
         for i in range(len(proposed_answers)):
-            # v = proposed_answers[i]
-            # tmp = QTextEdit()
-            # tmp.setHtml(self.asymptotics[v])
-            # text = tmp.toPlainText()
-            # self.checkbox_list.append(QCheckBox(text, self.answer_box))
-            # self.checkbox_list.append(QCheckBox(self.asymptotics[proposed_answers[i]], self.answer_box))
             self.checkbox_list.append(QCheckBox(proposed_answers[i], self.answer_box))
             self.answer_box.v_test_box.addWidget(self.checkbox_list[i], i)
 
@@ -140,7 +128,7 @@ class ChatBox(QSplitter):
             answer_box.setPlainText('')
 
     def answer_flush(self, correct, obj):
-        self.accept_result(correct)
+        change_task = self.accept_result(correct)
         time.sleep(0.5)
         flush = Design.WRONG_STYLE
         if correct:
@@ -150,6 +138,8 @@ class ChatBox(QSplitter):
         time.sleep(0.4)
         obj.setStyleSheet(Design.DEFAULT_STYLE)
         time.sleep(0.2)
+        if change_task:
+            self.__run_task()
 
     def __set_task(self, task):
         self.current_task = task
@@ -162,29 +152,35 @@ class ChatBox(QSplitter):
         self.answer_flush(answer, button)
 
     def accept_result(self, answer):
+        if answer or self.attempts == 2:
+            return True
         if not answer or (answer and self.attempts != 0):
             self.parent_window.main_window.accept_result(self.current_task, answer)
         self.attempts += 1
-        if self.attempts == 3:
-            self.parent_window.parent_window.run_chat_task()
+        return False
 
     def run_tasks(self, tasks, start, cont):
         self.tasks = tasks
-        while tasks:
-            self.__run(tasks[0])
-            del tasks[0]
-        if start:
-            pass
-            # self.parent_window.parent_window.run_code_window()
-        elif cont:
-            pass
-            # self.parent_window.parent_window.continue_code_window()
+        self.ix = 0
+        self.start = start
+        self.cont = cont
+        self.__run_task()
 
-    def __run(self, task):
-        self.__set_task(task)
-        if task.type == TaskType.TEST:
-            self.__answer_box_test()
-        if task.type == TaskType.YES_NO:
-            self.__answer_box_yes_no()
-        if task.type == TaskType.SINGLE_ANSWER:
-            self.__answer_box_single()
+    def __run_task(self):
+        print('DEBUG: ', self.ix)
+        if self.ix >= len(self.tasks):
+            self.pure_view()
+            if self.start:
+                self.parent_window.parent_window.run_code_window()
+            elif self.cont:
+                self.parent_window.parent_window.continue_code_window()
+        if self.ix < len(self.tasks):
+            task = self.tasks[self.ix]
+            self.__set_task(task)
+            if task.type == TaskType.TEST:
+                self.__answer_box_test()
+            if task.type == TaskType.YES_NO:
+                self.__answer_box_yes_no()
+            if task.type == TaskType.SINGLE_ANSWER:
+                self.__answer_box_single()
+            self.ix += 1
