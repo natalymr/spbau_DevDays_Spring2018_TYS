@@ -1,14 +1,11 @@
 import os
-
-from PyQt5.QtWidgets import QComboBox
-from PyQt5.QtWidgets import QFrame, QSplitter, QTextEdit, QPushButton, QWidget
-from PyQt5.QtCore import Qt
+import time
 import random
 import subprocess
 import json
-
-from PyQt5.QtWidgets import QLabel
-
+from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import *
+from src.utils import *
 from src.task import CodeTask
 
 
@@ -34,7 +31,8 @@ class WindowCode(QSplitter):
         self.snd_frame.setHandleWidth(0)
 
 
-        self.compilers = {"C++11": ['g++ test.cpp -std=c++11', './a.out', 'test.cpp'], "Python": ['', 'python3 test.py', 'test.py']}
+        self.compilers = {"C++11": ['g++ test.cpp -std=c++11', './a.out', 'test.cpp'],
+                          "Python": ['', 'python3 test.py', 'test.py']}
 
 
         self.combo = QComboBox(self.right)
@@ -51,8 +49,8 @@ class WindowCode(QSplitter):
 
         self.addWidget(self.fst_frame)
         self.addWidget(self.snd_frame)
-        self.setSizes([self.width()*19/20,
-                       self.width()/20])
+        self.setSizes([self.width()*19//20,
+                       self.width()//20])
 
         btn = QPushButton('Check', self.left)
         btn.move(0, 0)
@@ -72,12 +70,23 @@ class WindowCode(QSplitter):
         self.cmd_suff = ' 1>temp.txt 2>err.txt'
         self.file = self.compilers[self.language][2]
 
+    def answer_flush(self, correct):
+        time.sleep(0.5)
+        flush = Design.WRONG_STYLE
+        if correct:
+            flush = Design.RIGHT_STYLE
+        self.fst_frame.setStyleSheet(flush)
+        QApplication.processEvents()
+        time.sleep(0.4)
+        self.fst_frame.setStyleSheet(Design.DEFAULT_STYLE)
+        time.sleep(0.2)
+
 
 class SecondWindow(QWidget):
     def __init__(self, textIn, mainWindow):
         super(SecondWindow, self).__init__()
         self.setWindowTitle('Result')
-        self.resize(200, 200)
+        self.resize(120, 100)
         self.mainWindow = mainWindow
 
         file = self.mainWindow.file
@@ -97,7 +106,7 @@ class SecondWindow(QWidget):
                 tests = test["tests"]
         input = ""
         expectedRes = ""
-        num_test = random.randint(0,len(tests))
+        num_test = random.randint(0,len(tests) - 1)
         for im in tests[num_test]["input"]:
             input += im
         for om in tests[num_test]["output"]:
@@ -120,12 +129,15 @@ class SecondWindow(QWidget):
         os.remove("input.txt")
         if self.mainWindow.language == 'C++11' and not res == '':
             os.remove("a.out")
+        correct = False
         if res == expectedRes:
             result += 'OK'
+            correct = True
         elif res == '':
             result += 'Error'
         else:
             result += 'Wrong'
+        self.mainWindow.answer_flush(correct)
         self.text = QLabel(self)
         self.text.setText(result)
         if result=="OK":
@@ -133,4 +145,4 @@ class SecondWindow(QWidget):
             task = CodeTask(task_w.id, task_w.task_dif)
             self.mainWindow.window.main_window.accept_result(task, True)
             self.mainWindow.window.handle_finish()
-        self.text.move(80, 80)
+        self.text.move(40, 40)

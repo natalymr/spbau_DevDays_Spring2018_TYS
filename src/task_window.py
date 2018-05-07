@@ -40,7 +40,7 @@ class WindowTask(QSplitter):
         self.ste = self.dif_dict[self.task_dif][num]
         while self.ste["id"] >= 9 and not self.ste["id"] == 14:
             num = random.randint(0, len(self.dif_dict[self.task_dif]) - 1)
-            self.ste = self.dif_dict[num]
+            self.ste = self.dif_dict[self.task_dif][num]
 
         self.prob_name = self.ste["name"]
         self.id = self.ste["id"]
