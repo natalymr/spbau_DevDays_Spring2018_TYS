@@ -43,9 +43,6 @@ class InterviewWindow(QVBoxLayout):
         self.insertWidget(0, splitter2)
 
     def handle_back(self):
-        self.task_window.close()
-        self.chat_window.close()
-        self.code_window.close()
         self.main_window.set_account_window()
 
     def load_chat_tasks(self):
