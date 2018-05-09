@@ -144,5 +144,4 @@ class SecondWindow(QWidget):
             self.mainWindow.window.run_chat_task(count=5, cont=False)
             task = CodeTask(task_w.id, task_w.task_dif)
             self.mainWindow.window.main_window.accept_result(task, True)
-            self.mainWindow.window.handle_finish()
         self.text.move(40, 40)

@@ -110,22 +110,25 @@ class ChatBox(QSplitter):
 
     @pyqtSlot()
     def answer_click(self):
-        if self.current_task.type == TaskType.TEST:
-            self.__check_ckeckbox()
-            return
-        elif self.current_task.type == TaskType.SINGLE_ANSWER:
-            answer_box = self.answer_box
-            answer = answer_box.toPlainText()
-            right_answers = self.current_task.right_answers
-            self.answer_box.setPlainText(answer)
-            if answer:
-                correct = False
-                if answer.lower().replace(' ', '') in right_answers:
-                    correct = True
-                self.answer_flush(correct, answer_box)
-                QApplication.processEvents()
-                time.sleep(0.2)
-            answer_box.setPlainText('')
+        if self.current_task:
+            if self.current_task.type == TaskType.TEST:
+                self.__check_ckeckbox()
+                return
+            elif self.current_task.type == TaskType.SINGLE_ANSWER:
+                answer_box = self.answer_box
+                answer = answer_box.toPlainText()
+                right_answers = self.current_task.right_answers
+                self.answer_box.setPlainText(answer)
+                if answer:
+                    correct = False
+                    if answer.lower().replace(' ', '') in right_answers:
+                        correct = True
+                    self.answer_flush(correct, answer_box)
+                    QApplication.processEvents()
+                    time.sleep(0.2)
+                answer_box.setPlainText('')
+        else:
+            pass
 
     def answer_flush(self, correct, obj):
         self.accept_result(correct)
@@ -150,7 +153,8 @@ class ChatBox(QSplitter):
         self.answer_flush(answer, button)
 
     def accept_result(self, answer):
-        self.parent_window.main_window.accept_result(self.current_task, answer)
+        if answer:
+            self.parent_window.main_window.accept_result(self.current_task, answer)
 
     def run_tasks(self, tasks, start, cont):
         self.tasks = tasks
@@ -164,11 +168,15 @@ class ChatBox(QSplitter):
             self.question_box.setParent(None)
             self.question_box = self.__create_text_editor(True)
             self.insertWidget(1, self.question_box)
+            self.current_task = None
+            self.ix = 100500
             self.__answer_box_clear()
             if self.start:
                 self.parent_window.parent_window.run_code_window()
             elif self.cont:
                 self.parent_window.parent_window.continue_code_window()
+            else:
+                self.parent_window.parent_window.handle_finish()
         if self.ix < len(self.tasks):
             task = self.tasks[self.ix]
             self.__set_task(task)

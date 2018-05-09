@@ -148,22 +148,24 @@ class WindowTask(QSplitter):
 
 
     def tick_status(self):
+        finish_time = 2700
+        chat_pause_time = {finish_time // 3, finish_time * 2 // 3, finish_time}
         min = int(self.count/60)
         sec = int(self.count % 60)
         self.val = min + sec/100
         self.snd_frame.setValue(self.count*100/(self.totalMin*60))
         self.snd_frame.setFormat('%.02f' % self.val)
         self.count += 1
-        if self.count == 900 or self.count == 1800 or self.count == 2700:
+        if self.count in chat_pause_time:
             self.timer.stop()
             self.snd_frame.setPalette(self.palette_gray)
             co = 1
-            if not self.count == 2700 and self.window.difficulty>1:
+            if not self.count == finish_time and self.window.difficulty>1:
                 co += 1
-            if self.count == 2700:
+            if self.count == finish_time:
                 co += self.window.difficulty
-            self.window.run_chat_task(count=co, cont=not self.count == 2700)
-            if self.count == 2700:
+            self.window.run_chat_task(count=co, cont=not self.count == finish_time)
+            if self.count == finish_time:
                 self.window.handle_finish()
 
         if self.count > 60*self.totalMin:
